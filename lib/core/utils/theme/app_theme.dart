@@ -11,7 +11,7 @@ class AppTheme {
         secondary: AppColors.secondary,
         tertiary: AppColors.tertiary,
         surface: AppColors.surface,
-        surfaceVariant: AppColors.surfaceVariant,
+        // surfaceVariant: AppColors.surfaceVariant,
         error: AppColors.error,
         onPrimary: AppColors.onPrimary,
         onSecondary: AppColors.onSecondary,
