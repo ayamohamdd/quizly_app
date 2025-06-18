@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:quizly_app/core/app_router/app_routers.dart';
 import 'package:quizly_app/core/utils/theme/text_styles.dart';
 
-class UnitCardContent extends StatelessWidget {
-  const UnitCardContent({super.key, required this.name, required this.unitId});
+class SkillCardContent extends StatelessWidget {
+  const SkillCardContent({super.key, required this.name});
   final String name;
-  final int unitId;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -21,12 +18,7 @@ class UnitCardContent extends StatelessWidget {
             ),
           ),
         ),
-        IconButton(
-          onPressed: () {
-            GoRouter.of(context).push(AppRouter.skillsView, extra: unitId);
-          },
-          icon: Icon(Icons.arrow_forward),
-        ),
+        IconButton(onPressed: () {}, icon: Icon(Icons.arrow_forward)),
       ],
     );
   }

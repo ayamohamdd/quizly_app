@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:quizly_app/core/constants/media_query_extension.dart';
 import 'package:quizly_app/core/utils/theme/app_colors.dart';
-import 'package:quizly_app/features/units/presentation/views/widgets/unit_card_content.dart';
+import 'package:quizly_app/features/skills/presentation/views/widgets/skill_card_content.dart';
 
-class UnitCard extends StatelessWidget {
-  const UnitCard({super.key, required this.name, required this.unitId});
+class SkillCard extends StatelessWidget {
+  const SkillCard({super.key, required this.name});
   final String name;
-  final int unitId;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -26,7 +25,7 @@ class UnitCard extends StatelessWidget {
       ),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: context.screenWidth * 0.04),
-        child: UnitCardContent(name: name, unitId: unitId),
+        child: SkillCardContent(name: name),
       ),
     );
   }

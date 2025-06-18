@@ -13,7 +13,9 @@ class UnitsDataSourceImpl extends UnitsDataSource {
   @override
   Future<List<UnitModel>> fetchunits() async {
     Database db = await sqfliteProvider.openDatabaseFromAssets();
-    final List<Map<String, dynamic>> unitsData = await db.query('units');
+    final List<Map<String, dynamic>> unitsData = await sqfliteProvider.getUnits(
+      db,
+    );
 
     List<UnitModel> unitList =
         unitsData.map((map) => UnitModel.fromDatabase(map)).toList();

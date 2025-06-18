@@ -25,7 +25,12 @@ class SqfliteProvider {
   }
 
   Future<List<Map<String, dynamic>>> getUnits(Database db) async {
-    return await db.query('units',columns: ["name"]);
+    return await db.query('units');
   }
+
+   Future<List<Map<String, dynamic>>> getSkills(Database db,int unitId) async {
+    return await db.query('skills',where: 'unit_id= ?',whereArgs: [unitId] );
+  }
+
 
 }
