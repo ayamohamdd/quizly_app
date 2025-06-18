@@ -1,3 +1,5 @@
+import 'package:quizly_app/features/units/data/models/unit_model.dart';
+
 abstract class UnitsState {}
 
 final class UnitInitial extends UnitsState {}
@@ -5,7 +7,7 @@ final class UnitInitial extends UnitsState {}
 final class FetchUnitsLoading extends UnitsState {}
 
 final class FetchUnitsSuccess extends UnitsState {
-  final List<Map<String, dynamic>> units;
+  final List<UnitModel> units;
 
   FetchUnitsSuccess({required this.units});
 }

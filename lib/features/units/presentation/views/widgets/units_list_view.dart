@@ -16,7 +16,7 @@ class UnitsListView extends StatelessWidget {
         if (state is FetchUnitsSuccess) {
           return ListView.separated(
             itemBuilder: (context, index) {
-              return UnitCard(name: state.units[index]['name']);
+              return UnitCard(name: state.units[index].name!);
             },
             separatorBuilder: (context, index) {
               return SizedBox(height: context.screenHeight * 0.02);

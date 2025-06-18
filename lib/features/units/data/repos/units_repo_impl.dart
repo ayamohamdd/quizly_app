@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:quizly_app/core/utils/errors/failure.dart';
 import 'package:quizly_app/features/units/data/data_sources/units_data_source.dart';
+import 'package:quizly_app/features/units/data/models/unit_model.dart';
 import 'package:quizly_app/features/units/domain/repos/units_repo.dart';
 
 class UnitsRepoImpl extends UnitsRepo {
@@ -8,7 +9,7 @@ class UnitsRepoImpl extends UnitsRepo {
 
   UnitsRepoImpl({required this.unitsDataSource});
   @override
-  Future<Either<Failure, List<Map<String, dynamic>>>> fetchUnits() async {
+  Future<Either<Failure, List<UnitModel>>> fetchUnits() async {
     try {
       final units = await unitsDataSource.fetchunits();
       return Right(units);
