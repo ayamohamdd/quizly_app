@@ -25,6 +25,8 @@ class AppColors {
   static const Color tertiary = Color(0xFF617AFA);
   static const Color onTertiary = AppColors.surface;
 
+  static const Color shadowColor =  Color.fromARGB(22, 0, 0, 0);
+
   // Error colors
   static const Color error = Color(0xFFB3261E);
   static const Color onError = AppColors.surface;

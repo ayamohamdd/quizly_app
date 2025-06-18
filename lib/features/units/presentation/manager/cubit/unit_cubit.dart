@@ -12,7 +12,6 @@ class UnitsCubit extends Cubit<UnitsState> {
     emit(FetchUnitsLoading());
     final result = await _unitsUseCase.call();
     result.fold((e) => emit(FetchUnitsError(error: e.message)), (units) {
-      print(units.length);
       emit(FetchUnitsSuccess(units: units));
     });
   }

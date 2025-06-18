@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:quizly_app/core/constants/app_constants.dart';
 import 'package:quizly_app/core/constants/media_query_extension.dart';
-import 'package:quizly_app/core/di/setup_service_locator.dart';
-import 'package:quizly_app/core/utils/theme/app_colors.dart';
 import 'package:quizly_app/features/units/presentation/manager/cubit/unit_cubit.dart';
 import 'package:quizly_app/features/units/presentation/manager/cubit/unit_state.dart';
 import 'package:quizly_app/features/units/presentation/views/widgets/unit_card.dart';
-import 'package:quizly_app/features/units/presentation/views/widgets/unit_card_content.dart';
 
 class UnitsListView extends StatelessWidget {
   const UnitsListView({super.key});

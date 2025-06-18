@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:quizly_app/core/constants/media_query_extension.dart';
 import 'package:quizly_app/core/utils/theme/app_colors.dart';
@@ -17,7 +16,7 @@ class UnitCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: AppColors.shadowColor,
             spreadRadius: 1,
             blurRadius: 6,
             offset: Offset(0, 2),
