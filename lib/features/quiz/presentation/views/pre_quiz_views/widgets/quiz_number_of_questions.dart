@@ -19,7 +19,7 @@ class QuizNumberOfQuestions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<QuizSettingsCubit, QuizSettingsState>(
+    return BlocBuilder<QuizCubit, QuizSettingsState>(
       builder: (context, state) {
         return Wrap(
           spacing: 10,
@@ -36,7 +36,7 @@ class QuizNumberOfQuestions extends StatelessWidget {
                   ),
                   onSelected: (selected) {
                     if (selected) {
-                      context.read<QuizSettingsCubit>().selectNumber(number);
+                      context.read<QuizCubit>().selectNumber(number);
                     }
                   },
                   selected: isSelected,

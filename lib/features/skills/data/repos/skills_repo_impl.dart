@@ -5,16 +5,16 @@ import 'package:quizly_app/features/skills/data/models/skill_model.dart';
 import 'package:quizly_app/features/skills/domain/repos/skills_repo.dart';
 
 class SkillsRepoImpl extends SkillsRepo {
-  final SkillsDataSource unitsDataSource;
+  final SkillsDataSource skillsDataSource;
 
-  SkillsRepoImpl({required this.unitsDataSource});
+  SkillsRepoImpl({required this.skillsDataSource});
   @override
   Future<Either<Failure, List<SkillModel>>> fetchSkills(int? unitId) async {
     try {
-      final skills = await unitsDataSource.fetchSkills(unitId);
+      final skills = await skillsDataSource.fetchSkills(unitId);
       return Right(skills);
     } catch (e) {
-      return Left(DatabaseFailure.queryError(query: 'SELECT * FROM units'));
+      return Left(DatabaseFailure.queryError(query: 'SELECT * FROM skills'));
     }
   }
 }

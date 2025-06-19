@@ -1,5 +1,9 @@
 import 'package:get_it/get_it.dart';
 import 'package:quizly_app/core/sqflite/sqflite_provider.dart';
+import 'package:quizly_app/features/quiz/data/data_sources/quiz_data_source.dart';
+import 'package:quizly_app/features/quiz/data/repos/quiz_repo_impl.dart';
+import 'package:quizly_app/features/quiz/domain/repos/quiz_repo.dart';
+import 'package:quizly_app/features/quiz/domain/use_cases/fetch_questions_use_case.dart';
 import 'package:quizly_app/features/quiz/presentation/manager/cubit/quiz_cubit.dart';
 import 'package:quizly_app/features/skills/data/data_sources/skills_data_source.dart';
 import 'package:quizly_app/features/skills/data/repos/skills_repo_impl.dart';
@@ -32,6 +36,9 @@ class SetupSeviceLocator {
     sl.registerLazySingleton<SkillsDataSource>(
       () => SkillsDataSourceImpl(sqfliteProvider: sl.get()),
     );
+    sl.registerLazySingleton<QuizDataSource>(
+      () => QuizDataSourceImpl(sqfliteProvider: sl.get()),
+    );
   }
 
   static void registerRepositories() {
@@ -39,7 +46,10 @@ class SetupSeviceLocator {
       () => UnitsRepoImpl(unitsDataSource: sl<UnitsDataSource>()),
     );
     sl.registerLazySingleton<SkillsRepo>(
-      () => SkillsRepoImpl(unitsDataSource: sl<SkillsDataSource>()),
+      () => SkillsRepoImpl(skillsDataSource: sl<SkillsDataSource>()),
+    );
+    sl.registerLazySingleton<QuizRepo>(
+      () => QuizRepoImpl(quizDataSource: sl<QuizDataSource>()),
     );
   }
 
@@ -50,12 +60,16 @@ class SetupSeviceLocator {
     sl.registerLazySingleton<SkillsUseCase>(
       () => SkillsUseCase(skillsRepo: sl<SkillsRepo>()),
     );
+
+    sl.registerLazySingleton<FetchQuestionsUseCase>(
+      () => FetchQuestionsUseCase(quizRepo: sl<QuizRepo>()),
+    );
   }
 
   static void registerCubits() {
     sl.registerLazySingleton<UnitsCubit>(() => UnitsCubit());
     sl.registerLazySingleton<SkillsCubit>(() => SkillsCubit());
-    sl.registerLazySingleton<QuizSettingsCubit>(() => QuizSettingsCubit());
+    sl.registerLazySingleton<QuizCubit>(() => QuizCubit());
   }
 
   static void registerCore() {

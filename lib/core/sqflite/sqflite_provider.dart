@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:flutter/services.dart' show ByteData, rootBundle;
@@ -32,50 +34,55 @@ class SqfliteProvider {
   }
 
   static _onCreate(Database db, int version) async {
-    await createQuizzesTable(db);
-    await createQuizQuestionsTable(db);
+    await createQuizzesTable();
+    await createQuizQuestionsTable();
   }
 
-  Future<List<Map<String, dynamic>>> getUnits(Database db) async {
-    return await db.query('units');
+  Future<List<Map<String, dynamic>>> getUnits() async {
+    return await db!.query('units');
   }
 
-  Future<List<Map<String, dynamic>>> getSkills(Database db, int unitId) async {
-    return await db.query('skills', where: 'unit_id= ?', whereArgs: [unitId]);
+  Future<List<Map<String, dynamic>>> getSkills(int unitId) async {
+    return await db!.query('skills', where: 'unit_id= ?', whereArgs: [unitId]);
   }
 
   Future<List<Map<String, dynamic>>> getQuestions(
-    Database db,
+    // Database db,
     int skillId,
     List<String> levels,
-    int questionsNumber,
+    int numberOfQuestions,
   ) async {
     final levelPlaceholders = List.filled(levels.length, '?').join(', ');
+    log("$levelPlaceholders");
     final whereClause = 'skill_id = ? AND level IN ($levelPlaceholders)';
     final whereArgs = [skillId, ...levels];
-
-    return await db.query(
+    final response = await db!.query(
       'questions',
       where: whereClause,
       whereArgs: whereArgs,
-      limit: questionsNumber,
+      limit: numberOfQuestions,
       orderBy: 'RANDOM()',
     );
+    log("where $whereClause");
+    log("whereargs ${whereArgs}");
+    log("$response, $numberOfQuestions");
+   
+    return response;
   }
 
   Future<List<Map<String, dynamic>>> getMcqOptions(
-    Database db,
+    // Database db,
     int questionId,
   ) async {
-    return await db.query(
+    return await db!.query(
       'mcq_options',
       where: 'question_id= ?',
       whereArgs: [questionId],
     );
   }
 
-  static Future<void> createQuizzesTable(Database db) async {
-    await db.execute('''
+  static Future<void> createQuizzesTable() async {
+    await db!.execute('''
     CREATE TABLE quizzes (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     skill_id INTEGER NOT NULL,
@@ -85,8 +92,8 @@ class SqfliteProvider {
     ''');
   }
 
-  static Future<void> createQuizQuestionsTable(Database db) async {
-    await db.execute('''
+  static Future<void> createQuizQuestionsTable() async {
+    await db!.execute('''
    CREATE TABLE quiz_questions (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     quiz_id INTEGER NOT NULL,
@@ -101,8 +108,8 @@ class SqfliteProvider {
     ''');
   }
 
-  Future<List<Map<String, dynamic>>> getQuiz(Database db, int skillId) async {
-    return await db.query(
+  Future<List<Map<String, dynamic>>> getQuiz(int skillId) async {
+    return await db!.query(
       'quizzes',
       where: 'skill_id= ?',
       whereArgs: [skillId],
@@ -110,10 +117,10 @@ class SqfliteProvider {
   }
 
   Future<List<Map<String, dynamic>>> getSkillsPerformance(
-    Database db,
+    // Database db,
     int skillId,
   ) async {
-    return await db.rawQuery(
+    return await db!.rawQuery(
       '''
     SELECT level, 
     COUNT(*) AS total,

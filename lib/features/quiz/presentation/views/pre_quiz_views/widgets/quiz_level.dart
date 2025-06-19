@@ -7,12 +7,9 @@ import 'package:quizly_app/features/quiz/presentation/manager/cubit/quiz_cubit.d
 import 'package:quizly_app/features/quiz/presentation/manager/cubit/quiz_state.dart';
 
 class QuizLevel extends StatefulWidget {
-  const QuizLevel({
-    super.key,
-    required this.levels,
-  });
+  const QuizLevel({super.key, required this.levels});
 
-  final List<String> levels;
+  final Set<String> levels;
 
   @override
   State<QuizLevel> createState() => _QuizLevelState();
@@ -21,7 +18,7 @@ class QuizLevel extends StatefulWidget {
 class _QuizLevelState extends State<QuizLevel> {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<QuizSettingsCubit, QuizSettingsState>(
+    return BlocBuilder<QuizCubit, QuizSettingsState>(
       builder: (context, state) {
         return Wrap(
           spacing: 8,
@@ -39,7 +36,7 @@ class _QuizLevelState extends State<QuizLevel> {
                   ),
                   selected: isSelected,
                   onSelected: (_) {
-                    context.read<QuizSettingsCubit>().toggleLevel(level);
+                    context.read<QuizCubit>().toggleLevel(level);
                   },
 
                   selectedColor: AppColors.primary,

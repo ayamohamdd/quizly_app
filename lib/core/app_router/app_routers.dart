@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:quizly_app/core/di/setup_service_locator.dart';
 import 'package:quizly_app/features/quiz/presentation/manager/cubit/quiz_cubit.dart';
-import 'package:quizly_app/features/quiz/presentation/views/quiz_view.dart';
+import 'package:quizly_app/features/quiz/presentation/views/pre_quiz_views/pre_quiz_view.dart';
 import 'package:quizly_app/features/skills/presentation/manager/cubit/skills_cubit.dart';
 import 'package:quizly_app/features/skills/presentation/views/skills_view.dart';
 import 'package:quizly_app/features/units/presentation/manager/cubit/unit_cubit.dart';
@@ -43,8 +43,8 @@ class AppRouter {
         path: quizView,
         builder: (context, state) {
           return BlocProvider.value(
-            value: SetupSeviceLocator.sl<QuizSettingsCubit>(),
-            child: QuizView(),
+            value: SetupSeviceLocator.sl<QuizCubit>(),
+            child: PreQuizView(),
           );
         },
       ),

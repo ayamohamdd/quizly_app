@@ -1,24 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quizly_app/core/constants/media_query_extension.dart';
+import 'package:quizly_app/core/di/setup_service_locator.dart';
 import 'package:quizly_app/core/utils/theme/app_colors.dart';
 import 'package:quizly_app/core/utils/theme/text_styles.dart';
 import 'package:quizly_app/core/widgets/custom_button.dart';
 import 'package:quizly_app/features/quiz/presentation/manager/cubit/quiz_cubit.dart';
 import 'package:quizly_app/features/quiz/presentation/manager/cubit/quiz_state.dart';
-import 'package:quizly_app/features/quiz/presentation/views/widgets/quiz_level.dart';
-import 'package:quizly_app/features/quiz/presentation/views/widgets/quiz_number_of_questions.dart';
+import 'package:quizly_app/features/quiz/presentation/views/pre_quiz_views/widgets/quiz_level.dart';
+import 'package:quizly_app/features/quiz/presentation/views/pre_quiz_views/widgets/quiz_number_of_questions.dart';
 
-class QuizView extends StatefulWidget {
-  const QuizView({super.key});
+class PreQuizView extends StatefulWidget {
+  const PreQuizView({super.key});
 
   @override
-  State<QuizView> createState() => _QuizViewState();
+  State<PreQuizView> createState() => _PreQuizViewState();
 }
 
-class _QuizViewState extends State<QuizView> {
+class _PreQuizViewState extends State<PreQuizView> {
   final List<int> numberOfQuestions = [5, 10, 25, 50];
-  final List<String> levels = ['Easy', 'Medium', 'Hard'];
+  final Set<String> levels = {'easy', 'medium', 'hard'};
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,7 +40,7 @@ class _QuizViewState extends State<QuizView> {
             SizedBox(height: context.screenHeight * 0.02),
             QuizNumberOfQuestions(numberOfQuestions: numberOfQuestions),
             Spacer(),
-            BlocBuilder<QuizSettingsCubit, QuizSettingsState>(
+            BlocBuilder<QuizCubit, QuizSettingsState>(
               builder: (context, state) {
                 return CustomButton(
                   backgroundColor:
@@ -49,7 +50,13 @@ class _QuizViewState extends State<QuizView> {
                           : AppColors.onSurfaceDisabled,
                   text: "Start Quiz",
                   textColor: AppColors.surface,
-                  onPressed: () {},
+                  onPressed: () {
+                    SetupSeviceLocator.sl<QuizCubit>().fetchQuizQuerstions(
+                      1,
+                      state.selectedNumber!,
+                      state.selectedLevels!,
+                    );
+                  },
                 );
               },
             ),

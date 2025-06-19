@@ -14,7 +14,7 @@ class UnitsDataSourceImpl extends UnitsDataSource {
   Future<List<UnitModel>> fetchunits() async {
     // Database db = await sqfliteProvider.openDatabaseFromAssets();
     final List<Map<String, dynamic>> unitsData = await sqfliteProvider.getUnits(
-      SqfliteProvider.db!,
+      // SqfliteProvider.db!,
     );
 
     List<UnitModel> unitList =
