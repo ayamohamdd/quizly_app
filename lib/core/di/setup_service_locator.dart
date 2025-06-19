@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:quizly_app/core/sqflite/sqflite_provider.dart';
+import 'package:quizly_app/features/quiz/presentation/manager/cubit/quiz_cubit.dart';
 import 'package:quizly_app/features/skills/data/data_sources/skills_data_source.dart';
 import 'package:quizly_app/features/skills/data/repos/skills_repo_impl.dart';
 import 'package:quizly_app/features/skills/domain/repos/skills_repo.dart';
@@ -15,6 +16,8 @@ class SetupSeviceLocator {
   static final sl = GetIt.asNewInstance();
 
   static Future<void> init() async {
+    await SqfliteProvider.database;
+
     registerDataSources();
     registerRepositories();
     registerUseCases();
@@ -52,6 +55,7 @@ class SetupSeviceLocator {
   static void registerCubits() {
     sl.registerLazySingleton<UnitsCubit>(() => UnitsCubit());
     sl.registerLazySingleton<SkillsCubit>(() => SkillsCubit());
+    sl.registerLazySingleton<QuizSettingsCubit>(() => QuizSettingsCubit());
   }
 
   static void registerCore() {

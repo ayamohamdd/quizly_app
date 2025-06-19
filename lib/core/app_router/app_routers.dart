@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:quizly_app/core/di/setup_service_locator.dart';
+import 'package:quizly_app/features/quiz/presentation/manager/cubit/quiz_cubit.dart';
+import 'package:quizly_app/features/quiz/presentation/views/quiz_view.dart';
 import 'package:quizly_app/features/skills/presentation/manager/cubit/skills_cubit.dart';
 import 'package:quizly_app/features/skills/presentation/views/skills_view.dart';
 import 'package:quizly_app/features/units/presentation/manager/cubit/unit_cubit.dart';
@@ -11,10 +13,12 @@ class AppRouter {
   // static const String splashView = '/';
   static const String mainNavigationView = '/main';
   static const String unitsView = '/unitView';
+  static const String quizView = '/quizView';
+
   static const String skillsView = '/skillsView';
 
   static final appRouter = GoRouter(
-    initialLocation: unitsView,
+    initialLocation: quizView,
     routes: [
       GoRoute(
         path: unitsView,
@@ -32,6 +36,15 @@ class AppRouter {
           return BlocProvider.value(
             value: SetupSeviceLocator.sl<SkillsCubit>()..fetchSkills(unitId),
             child: SkillsView(),
+          );
+        },
+      ),
+      GoRoute(
+        path: quizView,
+        builder: (context, state) {
+          return BlocProvider.value(
+            value: SetupSeviceLocator.sl<QuizSettingsCubit>(),
+            child: QuizView(),
           );
         },
       ),

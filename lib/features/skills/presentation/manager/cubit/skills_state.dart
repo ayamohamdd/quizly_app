@@ -1,5 +1,4 @@
 import 'package:quizly_app/features/skills/data/models/skill_model.dart';
-import 'package:quizly_app/features/units/data/models/unit_model.dart';
 
 abstract class SkillsState {}
 

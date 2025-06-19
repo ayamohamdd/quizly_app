@@ -4,7 +4,6 @@ import 'package:quizly_app/core/constants/media_query_extension.dart';
 import 'package:quizly_app/features/skills/presentation/manager/cubit/skills_cubit.dart';
 import 'package:quizly_app/features/skills/presentation/manager/cubit/skills_state.dart';
 import 'package:quizly_app/features/skills/presentation/views/widgets/skill_card.dart';
-import 'package:quizly_app/features/units/presentation/views/widgets/unit_card.dart';
 
 class SkillsListView extends StatelessWidget {
   const SkillsListView({super.key});

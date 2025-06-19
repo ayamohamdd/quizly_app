@@ -11,9 +11,9 @@ class SkillsDataSourceImpl extends SkillsDataSource {
   SkillsDataSourceImpl({required this.sqfliteProvider});
   @override
   Future<List<SkillModel>> fetchSkills(int? unitId) async {
-    Database db = await sqfliteProvider.openDatabaseFromAssets();
+    // Database db = await sqfliteProvider.openDatabaseFromAssets();
     final List<Map<String, dynamic>> skillsData = await sqfliteProvider
-        .getSkills(db, unitId!);
+        .getSkills(SqfliteProvider.db!, unitId!);
 
     List<SkillModel> unitList =
         skillsData.map((map) => SkillModel.fromDatabase(map)).toList();
