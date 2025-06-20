@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -47,13 +46,11 @@ class SqfliteProvider {
   }
 
   Future<List<Map<String, dynamic>>> getQuestions(
-    // Database db,
     int skillId,
     List<String> levels,
     int numberOfQuestions,
   ) async {
     final levelPlaceholders = List.filled(levels.length, '?').join(', ');
-    log("$levelPlaceholders");
     final whereClause = 'skill_id = ? AND level IN ($levelPlaceholders)';
     final whereArgs = [skillId, ...levels];
     final response = await db!.query(
@@ -63,10 +60,8 @@ class SqfliteProvider {
       limit: numberOfQuestions,
       orderBy: 'RANDOM()',
     );
-    log("where $whereClause");
-    log("whereargs ${whereArgs}");
-    log("$response, $numberOfQuestions");
-   
+
+
     return response;
   }
 
@@ -74,11 +69,12 @@ class SqfliteProvider {
     // Database db,
     int questionId,
   ) async {
-    return await db!.query(
+    final response = await db!.query(
       'mcq_options',
       where: 'question_id= ?',
       whereArgs: [questionId],
     );
+    return response;
   }
 
   static Future<void> createQuizzesTable() async {

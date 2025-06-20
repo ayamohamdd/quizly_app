@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quizly_app/core/utils/theme/app_colors.dart';
-import 'package:quizly_app/core/utils/theme/text_styles.dart';
 import 'package:quizly_app/features/quiz/presentation/manager/cubit/quiz_cubit.dart';
 import 'package:quizly_app/features/quiz/presentation/manager/cubit/quiz_state.dart';
 
@@ -28,6 +27,8 @@ class QuizNumberOfQuestions extends StatelessWidget {
                 final isSelected = state.selectedNumber == number;
 
                 return ChoiceChip(
+                  avatarBorder: CircleBorder(side: BorderSide(color: AppColors.backgroundbluredColor)),
+                  shadowColor: AppColors.onPrimary,
                   label: Text(
                     '$number',
                     style: TextStyle(
@@ -41,6 +42,7 @@ class QuizNumberOfQuestions extends StatelessWidget {
                   },
                   selected: isSelected,
                   selectedColor: AppColors.primary,
+                  
                 );
               }).toList(),
         );

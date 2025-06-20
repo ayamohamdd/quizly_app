@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:quizly_app/core/app_router/app_routers.dart';
 import 'package:quizly_app/core/constants/media_query_extension.dart';
 import 'package:quizly_app/core/di/setup_service_locator.dart';
 import 'package:quizly_app/core/utils/theme/app_colors.dart';
@@ -42,10 +44,16 @@ class _PreQuizViewState extends State<PreQuizView> {
             Spacer(),
             BlocBuilder<QuizCubit, QuizSettingsState>(
               builder: (context, state) {
+                final bool isSelected =
+                    state.selectedLevels.isNotEmpty &&
+                    state.selectedNumber != null;
                 return CustomButton(
+                  borderColor:
+                      isSelected
+                          ? AppColors.primary
+                          : AppColors.onSurfaceDisabled,
                   backgroundColor:
-                      state.selectedLevels.isNotEmpty &&
-                              state.selectedNumber != null
+                      isSelected
                           ? AppColors.primary
                           : AppColors.onSurfaceDisabled,
                   text: "Start Quiz",
@@ -54,8 +62,10 @@ class _PreQuizViewState extends State<PreQuizView> {
                     SetupSeviceLocator.sl<QuizCubit>().fetchQuizQuerstions(
                       1,
                       state.selectedNumber!,
-                      state.selectedLevels!,
+                      state.selectedLevels,
                     );
+
+                    GoRouter.of(context).pushReplacement(AppRouter.quizView);
                   },
                 );
               },

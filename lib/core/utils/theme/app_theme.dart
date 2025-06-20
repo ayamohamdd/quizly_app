@@ -20,7 +20,7 @@ class AppTheme {
         onSurfaceVariant: AppColors.onSurfaceVariant,
         onError: AppColors.onError,
       ),
-      scaffoldBackgroundColor: AppColors.surfaceVariant,
+      scaffoldBackgroundColor: AppColors.surface,
       fontFamily: GoogleFonts.poppins().fontFamily,
       textTheme: GoogleFonts.poppinsTextTheme().apply(
         bodyColor: AppColors.onSurface,

@@ -1,3 +1,4 @@
+import 'package:quizly_app/features/quiz/domain/entities/mcq_options_entity.dart';
 import 'package:quizly_app/features/quiz/domain/entities/quiz_question_entity.dart';
 
 class QuizQuestionModel extends QuizQuestionEntity {
@@ -12,6 +13,8 @@ class QuizQuestionModel extends QuizQuestionEntity {
   @override
   String? type;
   @override
+  List<McqOptionsEntity>? mcqOptions;
+  @override
   String? correctAnswer;
   @override
   String? explanation;
@@ -23,6 +26,7 @@ class QuizQuestionModel extends QuizQuestionEntity {
     required this.type,
     required this.correctAnswer,
     required this.explanation,
+    required this.mcqOptions
   }) : super(
          id: id,
          skillId: skillId,
@@ -31,6 +35,7 @@ class QuizQuestionModel extends QuizQuestionEntity {
          type: type,
          correctAnswer: correctAnswer,
          explanation: explanation,
+         mcqOptions: mcqOptions
        );
 
   factory QuizQuestionModel.fromDatabase(Map<String, dynamic> db) {
@@ -42,6 +47,7 @@ class QuizQuestionModel extends QuizQuestionEntity {
       type: db["type"],
       correctAnswer: db["correctAnswer"],
       explanation: db["explanation"],
+      mcqOptions: null
     );
   }
 }
