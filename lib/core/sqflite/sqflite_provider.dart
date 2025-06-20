@@ -101,6 +101,14 @@ class SqfliteProvider {
     ''');
   }
 
+  Future<void> insertQuiz(int skillId) async {
+    await db!.insert("quizzes", {"skill_id": skillId});
+  }
+
+  Future<List<Map<String, Object?>>> getQuizzes() async {
+    return await db!.query('quizzes');
+  }
+
   Future<List<Map<String, dynamic>>> getQuiz(int skillId) async {
     return await db!.query(
       'quizzes',
@@ -109,10 +117,7 @@ class SqfliteProvider {
     );
   }
 
-  Future<List<Map<String, dynamic>>> getSkillsPerformance(
-    // Database db,
-    int skillId,
-  ) async {
+  Future<List<Map<String, dynamic>>> getSkillsPerformance(int skillId) async {
     return await db!.rawQuery(
       '''
     SELECT level, 

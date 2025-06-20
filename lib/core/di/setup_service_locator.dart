@@ -5,6 +5,11 @@ import 'package:quizly_app/features/quiz/data/repos/quiz_repo_impl.dart';
 import 'package:quizly_app/features/quiz/domain/repos/quiz_repo.dart';
 import 'package:quizly_app/features/quiz/domain/use_cases/fetch_questions_use_case.dart';
 import 'package:quizly_app/features/quiz/presentation/manager/cubit/quiz_cubit.dart';
+import 'package:quizly_app/features/skill_performance/data/data_sources/skill_performance_data_source.dart';
+import 'package:quizly_app/features/skill_performance/data/repos/skill_performance_repo_impl.dart';
+import 'package:quizly_app/features/skill_performance/domain/repos/skill_performance_repo.dart';
+import 'package:quizly_app/features/skill_performance/domain/use_cases/create_quiz_use_case.dart';
+import 'package:quizly_app/features/skill_performance/presentation/manager/cubit/skill_performance_cubit.dart';
 import 'package:quizly_app/features/skills/data/data_sources/skills_data_source.dart';
 import 'package:quizly_app/features/skills/data/repos/skills_repo_impl.dart';
 import 'package:quizly_app/features/skills/domain/repos/skills_repo.dart';
@@ -36,6 +41,9 @@ class SetupSeviceLocator {
     sl.registerLazySingleton<SkillsDataSource>(
       () => SkillsDataSourceImpl(sqfliteProvider: sl.get()),
     );
+    sl.registerLazySingleton<SkillPerformanceDataSource>(
+      () => SkillPerformanceDataSourceImpl(sqfliteProvider: sl.get()),
+    );
     sl.registerLazySingleton<QuizDataSource>(
       () => QuizDataSourceImpl(sqfliteProvider: sl.get()),
     );
@@ -47,6 +55,11 @@ class SetupSeviceLocator {
     );
     sl.registerLazySingleton<SkillsRepo>(
       () => SkillsRepoImpl(skillsDataSource: sl<SkillsDataSource>()),
+    );
+    sl.registerLazySingleton<SkillPerformanceRepo>(
+      () => SkillPerformanceRepoImpl(
+        skillPerformanceDataSource: sl<SkillPerformanceDataSource>(),
+      ),
     );
     sl.registerLazySingleton<QuizRepo>(
       () => QuizRepoImpl(quizDataSource: sl<QuizDataSource>()),
@@ -61,6 +74,10 @@ class SetupSeviceLocator {
       () => SkillsUseCase(skillsRepo: sl<SkillsRepo>()),
     );
 
+    sl.registerLazySingleton<CreateQuizUseCase>(
+      () => CreateQuizUseCase(skillPerformanceRepo: sl<SkillPerformanceRepo>()),
+    );
+
     sl.registerLazySingleton<FetchQuestionsUseCase>(
       () => FetchQuestionsUseCase(quizRepo: sl<QuizRepo>()),
     );
@@ -69,6 +86,10 @@ class SetupSeviceLocator {
   static void registerCubits() {
     sl.registerLazySingleton<UnitsCubit>(() => UnitsCubit());
     sl.registerLazySingleton<SkillsCubit>(() => SkillsCubit());
+    sl.registerLazySingleton<SkillPerformanceCubit>(
+      () => SkillPerformanceCubit(),
+    );
+
     sl.registerLazySingleton<QuizCubit>(() => QuizCubit());
   }
 

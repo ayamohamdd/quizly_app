@@ -15,7 +15,7 @@ class SkillsListView extends StatelessWidget {
         if (state is FetchSkillsSuccess) {
           return ListView.separated(
             itemBuilder: (context, index) {
-              return SkillCard(name: state.skills[index].name!);
+              return SkillCard(skillId: state.skills[index].id!,name: state.skills[index].name!);
             },
             separatorBuilder: (context, index) {
               return SizedBox(height: context.screenHeight * 0.02);

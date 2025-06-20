@@ -5,6 +5,8 @@ import 'package:quizly_app/core/di/setup_service_locator.dart';
 import 'package:quizly_app/features/quiz/presentation/manager/cubit/quiz_cubit.dart';
 import 'package:quizly_app/features/quiz/presentation/views/pre_quiz_views/pre_quiz_view.dart';
 import 'package:quizly_app/features/quiz/presentation/views/quiz_views/quiz_view.dart';
+import 'package:quizly_app/features/skill_performance/presentation/manager/cubit/skill_performance_cubit.dart';
+import 'package:quizly_app/features/skill_performance/presentation/views/skill_performance_view.dart';
 import 'package:quizly_app/features/skills/presentation/manager/cubit/skills_cubit.dart';
 import 'package:quizly_app/features/skills/presentation/views/skills_view.dart';
 import 'package:quizly_app/features/units/presentation/manager/cubit/unit_cubit.dart';
@@ -14,13 +16,15 @@ class AppRouter {
   // static const String splashView = '/';
   static const String mainNavigationView = '/main';
   static const String unitsView = '/unitView';
+
   static const String preQuizView = '/preQuizView';
   static const String quizView = '/quizView';
 
   static const String skillsView = '/skillsView';
+  static const String skillPerformanceView = '/skillPerformanceView';
 
   static final appRouter = GoRouter(
-    initialLocation: preQuizView,
+    initialLocation: unitsView,
     routes: [
       GoRoute(
         path: unitsView,
@@ -38,6 +42,16 @@ class AppRouter {
           return BlocProvider.value(
             value: SetupSeviceLocator.sl<SkillsCubit>()..fetchSkills(unitId),
             child: SkillsView(),
+          );
+        },
+      ),
+      GoRoute(
+        path: skillPerformanceView,
+        builder: (context, state) {
+          int? skillId = state.extra as int?;
+          return BlocProvider.value(
+            value: SetupSeviceLocator.sl<SkillPerformanceCubit>(),
+            child: SkillPerformanceView(skillId: skillId),
           );
         },
       ),

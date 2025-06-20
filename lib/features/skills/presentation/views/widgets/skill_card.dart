@@ -4,8 +4,9 @@ import 'package:quizly_app/core/utils/theme/app_colors.dart';
 import 'package:quizly_app/features/skills/presentation/views/widgets/skill_card_content.dart';
 
 class SkillCard extends StatelessWidget {
-  const SkillCard({super.key, required this.name});
+  const SkillCard({super.key, required this.name, required this.skillId});
   final String name;
+  final int skillId;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -25,7 +26,7 @@ class SkillCard extends StatelessWidget {
       ),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: context.screenWidth * 0.04),
-        child: SkillCardContent(name: name),
+        child: SkillCardContent(skillId:skillId ,name: name),
       ),
     );
   }
