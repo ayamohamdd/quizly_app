@@ -45,7 +45,7 @@ class QuizQuestionModel extends QuizQuestionEntity {
       questionText: db["question_text"],
       level: db["level"],
       type: db["type"],
-      correctAnswer: db["correctAnswer"],
+      correctAnswer: db["correct_answer"],
       explanation: db["explanation"],
       mcqOptions: null
     );

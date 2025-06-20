@@ -1,4 +1,3 @@
-
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:flutter/services.dart' show ByteData, rootBundle;
@@ -51,16 +50,14 @@ class SqfliteProvider {
     int numberOfQuestions,
   ) async {
     final levelPlaceholders = List.filled(levels.length, '?').join(', ');
-    final whereClause = 'skill_id = ? AND level IN ($levelPlaceholders)';
-    final whereArgs = [skillId, ...levels];
-    final response = await db!.query(
-      'questions',
-      where: whereClause,
-      whereArgs: whereArgs,
-      limit: numberOfQuestions,
-      orderBy: 'RANDOM()',
-    );
-
+    final whereArgs = [skillId, ...levels, numberOfQuestions];
+    final response = await db!.rawQuery('''
+    SELECT * FROM questions
+    WHERE skill_id = ? AND level IN ($levelPlaceholders)
+    GROUP BY question_text
+    ORDER BY RANDOM()
+    LIMIT ?
+  ''', whereArgs);
 
     return response;
   }

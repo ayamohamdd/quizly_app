@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:quizly_app/core/di/setup_service_locator.dart';
 import 'package:quizly_app/features/quiz/domain/entities/fetch_questions_param_entity.dart';
@@ -43,9 +45,17 @@ class QuizCubit extends Cubit<QuizSettingsState> {
     );
   }
 
-  void selectMcqOption(int questionIndex, int selectedOptionIndex) {
-    final updatedSelections = Map<int, int>.from(state.selectedMcqOptions);
+  void selectMcqOption(int questionIndex, String selectedOptionIndex) {
+    final updatedSelections = Map<int, String>.from(state.selectedMcqOptions);
     updatedSelections[questionIndex] = selectedOptionIndex;
+    log("$updatedSelections");
+
     emit(state.copyWith(selectedMcqOptions: updatedSelections));
+  }
+
+  void setFITBAnswer(int questionId, String answer) {
+    final updatedAnswers = Map<int, String>.from(state.fitbAnswers);
+    updatedAnswers[questionId] = answer;
+    emit(state.copyWith(fitbAnswers: updatedAnswers));
   }
 }

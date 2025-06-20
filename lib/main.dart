@@ -1,6 +1,7 @@
-
+import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:path/path.dart';
 import 'package:quizly_app/core/app_router/app_routers.dart';
 import 'package:quizly_app/core/di/setup_service_locator.dart';
 import 'package:quizly_app/core/utils/bloc_observer.dart';
@@ -9,12 +10,8 @@ import 'package:quizly_app/core/utils/theme/app_theme.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SetupSeviceLocator.init();
-  // QuizDataSource quizDataSource = QuizDataSourceImpl(
-  //   sqfliteProvider: SetupSeviceLocator.sl.get(),
-  // );
-  // quizDataSource.fetchQuizQuestions(1, ["easy", "hard"], 25);
   Bloc.observer = const SimpleBlocObserver();
-  runApp(const MyApp());
+  runApp(DevicePreview(builder: (context) => const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -23,6 +20,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      locale: DevicePreview.locale(context),
+      builder: DevicePreview.appBuilder,
+
       title: 'Quizly App',
       debugShowCheckedModeBanner: false,
       routerConfig: AppRouter.appRouter,

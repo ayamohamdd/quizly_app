@@ -4,38 +4,39 @@ import 'package:quizly_app/core/constants/media_query_extension.dart';
 import 'package:quizly_app/core/utils/theme/app_colors.dart';
 import 'package:quizly_app/core/utils/theme/text_styles.dart';
 import 'package:quizly_app/core/widgets/custom_button.dart';
+import 'package:quizly_app/features/quiz/domain/entities/quiz_question_entity.dart';
 import 'package:quizly_app/features/quiz/presentation/manager/cubit/quiz_cubit.dart';
 import 'package:quizly_app/features/quiz/presentation/manager/cubit/quiz_state.dart';
 import 'package:quizly_app/features/quiz/presentation/views/quiz_views/widgets/explanation_bottom_sheet.dart';
+import 'package:quizly_app/features/quiz/presentation/views/quiz_views/widgets/mcq/quiz_mcq_options.dart';
 import 'package:quizly_app/features/quiz/presentation/views/quiz_views/widgets/quiz_progression_bar.dart';
 
-class QuizAnswerBuilder extends StatelessWidget {
-  const QuizAnswerBuilder({
+class QuizMcqAnswerBuilder extends StatelessWidget {
+  const QuizMcqAnswerBuilder({
     super.key,
     required this.pageController,
-    required this.answer,
-    required this.questionText,
+
     required this.questionIndex,
     required this.questionsLength,
-    required this.questionId,
-    required this.explanation, 
+    required this.questionEntity,
   });
+
   final PageController pageController;
-  final Widget answer;
-  final int questionId;
-  final String questionText;
-  final String explanation;
+  // final int questionId;
+  // final String questionText;
+  // final String explanation;
   final int questionIndex;
   final int questionsLength;
+  final QuizQuestionEntity questionEntity;
+  // final List<McqOptionsEntity> options;
+
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
       slivers: [
         SliverFillRemaining(
           child: GestureDetector(
-            onTap: () {
-              FocusManager.instance.primaryFocus?.unfocus();
-            },
+            onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -44,14 +45,22 @@ class QuizAnswerBuilder extends StatelessWidget {
                   index: questionIndex,
                 ),
                 SizedBox(height: context.screenHeight * 0.05),
-                Text(
-                  "$questionText = ?",
-                  style: AppTextStyles.heading3.copyWith(
-                    color: AppColors.onSurface,
+                Expanded(
+                  child: Text(
+                    "${questionEntity.questionText} = ?",
+                    style: AppTextStyles.heading3.copyWith(
+                      color: AppColors.onSurface,
+                    ),
                   ),
                 ),
                 SizedBox(height: context.screenHeight * 0.05),
-                Expanded(child: answer),
+                Expanded(
+                  flex: 9,
+                  child: QuizMcqOptions(
+                    questionOptions: questionEntity.mcqOptions!,
+                    questionId: questionEntity.id!,
+                  ),
+                ),
                 BlocBuilder<QuizCubit, QuizSettingsState>(
                   builder: (context, state) {
                     return CustomButton(
@@ -59,8 +68,12 @@ class QuizAnswerBuilder extends StatelessWidget {
                       textColor: AppColors.onTertiary,
                       text: 'Submit',
                       onPressed: () {
-                        if (state.selectedMcqOptions[questionId] ==
-                            state.questions![questionIndex].correctAnswer) {
+                        final selected =
+                            state.selectedMcqOptions[questionEntity.id];
+                        final correct =
+                            state.questions![questionIndex].correctAnswer;
+
+                        if (selected == correct) {
                           pageController.nextPage(
                             duration: Duration(milliseconds: 400),
                             curve: Curves.easeInOut,
@@ -68,11 +81,10 @@ class QuizAnswerBuilder extends StatelessWidget {
                         } else {
                           showBottomSheet(
                             context: context,
-                            builder: (context) {
-                              return ExplanationBottomSheet(
-                                explanation: explanation,
-                              );
-                            },
+                            builder:
+                                (_) => ExplanationBottomSheet(
+                                  explanation: questionEntity.explanation,
+                                ),
                           );
                         }
                       },
