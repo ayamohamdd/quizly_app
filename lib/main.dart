@@ -9,13 +9,23 @@ import 'package:quizly_app/core/di/setup_service_locator.dart';
 import 'package:quizly_app/core/sqflite/sqflite_provider.dart';
 import 'package:quizly_app/core/utils/bloc_observer.dart';
 import 'package:quizly_app/core/utils/theme/app_theme.dart';
+import 'package:quizly_app/features/quiz_performance/data/data_source/quiz_performance_data_source.dart';
+import 'package:quizly_app/features/quiz_performance/data/models/quiz_performance_model.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SetupSeviceLocator.init();
   // Bloc.observer = const SimpleBlocObserver();
   SqfliteProvider sqfliteProvider = SqfliteProvider();
-  log("message ${await sqfliteProvider.getQuizScorePerLevel( 13)}");
+  QuizPerformanceDataSource quizPerformanceDataSource =
+      QuizPerformanceDataSourceImpl(sqfliteProvider: sqfliteProvider);
+
+  List<QuizPerformanceModel> q = await quizPerformanceDataSource
+      .getQuizPerformancePerLevel(33);
+  log("ha $q");
+  if (q.isNotEmpty) {
+    log("message ${await quizPerformanceDataSource.getQuizScore(q)}");
+  }
   runApp(const MyApp());
 }
 

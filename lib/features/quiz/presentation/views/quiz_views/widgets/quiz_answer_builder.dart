@@ -57,6 +57,7 @@ class QuizAnswerBuilder extends StatelessWidget {
                     return CustomButton(
                       backgroundColor: AppColors.primary,
                       textColor: AppColors.onTertiary,
+                      borderColor: AppColors.primary,
                       text: 'Submit',
                       onPressed: () {
                         if (state.selectedMcqOptions[questionId] ==

@@ -29,6 +29,7 @@ class SkillPerformanceView extends StatelessWidget {
               builder: (context, state) {
                 return CustomButton(
                   backgroundColor: AppColors.primary,
+                  borderColor: AppColors.primary,
                   textColor: AppColors.surface,
                   text: "Create Quiz",
                   isLoading: state is SkillPerformanceCreateQuizLoading,

@@ -6,6 +6,11 @@ import 'package:quizly_app/features/quiz/domain/repos/quiz_repo.dart';
 import 'package:quizly_app/features/quiz/domain/use_cases/fetch_questions_use_case.dart';
 import 'package:quizly_app/features/quiz/domain/use_cases/insert_quiz_question_use_case.dart';
 import 'package:quizly_app/features/quiz/presentation/manager/cubit/quiz_cubit.dart';
+import 'package:quizly_app/features/quiz_performance/data/data_source/quiz_performance_data_source.dart';
+import 'package:quizly_app/features/quiz_performance/data/repos/quiz_performance_repo_impl.dart';
+import 'package:quizly_app/features/quiz_performance/domain/repos/quiz_performance_repo.dart';
+import 'package:quizly_app/features/quiz_performance/domain/use_cases/get_quiz_performance_use_case.dart';
+import 'package:quizly_app/features/quiz_performance/domain/use_cases/get_quiz_score_use_case.dart';
 import 'package:quizly_app/features/skill_performance/data/data_sources/skill_performance_data_source.dart';
 import 'package:quizly_app/features/skill_performance/data/repos/skill_performance_repo_impl.dart';
 import 'package:quizly_app/features/skill_performance/domain/repos/skill_performance_repo.dart';
@@ -48,6 +53,9 @@ class SetupSeviceLocator {
     sl.registerLazySingleton<QuizDataSource>(
       () => QuizDataSourceImpl(sqfliteProvider: sl.get()),
     );
+    sl.registerLazySingleton<QuizPerformanceDataSource>(
+      () => QuizPerformanceDataSourceImpl(sqfliteProvider: sl.get()),
+    );
   }
 
   static void registerRepositories() {
@@ -64,6 +72,11 @@ class SetupSeviceLocator {
     );
     sl.registerLazySingleton<QuizRepo>(
       () => QuizRepoImpl(quizDataSource: sl<QuizDataSource>()),
+    );
+    sl.registerLazySingleton<QuizPerformanceRepo>(
+      () => QuizPerformanceRepoImpl(
+        quizPerformanceDataSource: sl<QuizPerformanceDataSource>(),
+      ),
     );
   }
 
@@ -82,8 +95,18 @@ class SetupSeviceLocator {
     sl.registerLazySingleton<FetchQuestionsUseCase>(
       () => FetchQuestionsUseCase(quizRepo: sl<QuizRepo>()),
     );
-     sl.registerLazySingleton<InsertQuizQuestionUseCase>(
+    sl.registerLazySingleton<InsertQuizQuestionUseCase>(
       () => InsertQuizQuestionUseCase(quizRepo: sl<QuizRepo>()),
+    );
+
+    sl.registerLazySingleton<GetQuizPerformanceUseCase>(
+      () => GetQuizPerformanceUseCase(
+        quizPerformanceRepo: sl<QuizPerformanceRepo>(),
+      ),
+    );
+
+    sl.registerLazySingleton<GetQuizScoreUseCase>(
+      () => GetQuizScoreUseCase(quizPerformanceRepo: sl<QuizPerformanceRepo>()),
     );
   }
 

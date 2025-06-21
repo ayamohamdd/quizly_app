@@ -73,7 +73,6 @@ class SqfliteProvider {
   }
 
   Future<List<Map<String, dynamic>>> getMcqOptions(
-    // Database db,
     int questionId,
   ) async {
     final response = await db!.query(
@@ -168,7 +167,7 @@ class SqfliteProvider {
     );
   }
 
-  Future<List<Map<String, dynamic>>> getQuizScorePerLevel(int quizId) async {
+  Future<List<Map<String, dynamic>>> getQuizPerformancePerLevel(int quizId) async {
     final result = await db!.rawQuery(
       '''
       SELECT qq.question_level, 

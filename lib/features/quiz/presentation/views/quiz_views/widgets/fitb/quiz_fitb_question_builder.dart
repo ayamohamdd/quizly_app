@@ -69,6 +69,8 @@ class QuizFitbAnswerBuilder extends StatelessWidget {
 
         return CustomButton(
           backgroundColor: AppColors.primary,
+                      borderColor: AppColors.primary,
+
           textColor: AppColors.onTertiary,
           text: 'Submit',
           onPressed:
