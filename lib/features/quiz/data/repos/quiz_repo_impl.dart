@@ -28,20 +28,22 @@ class QuizRepoImpl extends QuizRepo {
   }
 
   @override
-  Future<Either<Failure, void>> insertQuizQuestion(
+  Future<Either<Failure, int>> insertQuizQuestion(
     int? quizId,
     int? questionId,
+    String? questionLevel,
     String? userAnswer,
     int? isCorrect,
   ) async {
     try {
-      await quizDataSource.insertQuizQuestion(
+      final id = await quizDataSource.insertQuizQuestion(
         quizId!,
         questionId!,
+        questionLevel!,
         userAnswer!,
         isCorrect!,
       );
-      return Right("Question is Inserted");
+      return Right(id);
     } catch (e) {
       return Left(DatabaseFailure.insertError(table: "quiz_questions"));
     }

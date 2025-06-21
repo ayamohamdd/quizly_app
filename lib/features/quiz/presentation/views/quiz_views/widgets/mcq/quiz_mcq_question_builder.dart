@@ -28,7 +28,6 @@ class QuizMcqAnswerBuilder extends StatelessWidget {
   final int questionIndex;
   final int questionsLength;
   final QuizQuestionEntity questionEntity;
-  // final List<McqOptionsEntity> options;
 
   @override
   Widget build(BuildContext context) {
@@ -61,53 +60,78 @@ class QuizMcqAnswerBuilder extends StatelessWidget {
                     questionId: questionEntity.id!,
                   ),
                 ),
-                BlocBuilder<QuizCubit, QuizSettingsState>(
-                  builder: (context, state) {
-                    return CustomButton(
-                      backgroundColor: AppColors.primary,
-                      textColor: AppColors.onTertiary,
-                      text: 'Submit',
-                      onPressed: () {
-                        final selected =
-                            state.selectedMcqOptions[questionEntity.id];
-                        final correct =
-                            state.questions![questionIndex].correctAnswer;
-
-                        if (selected == correct) {
-                          SetupSeviceLocator.sl<QuizCubit>().insertQuizQuestion(
-                            quizId,
-                            questionEntity.id,
-                            selected,
-                            1,
-                          );
-                          pageController.nextPage(
-                            duration: Duration(milliseconds: 400),
-                            curve: Curves.easeInOut,
-                          );
-                        } else {
-                          SetupSeviceLocator.sl<QuizCubit>().insertQuizQuestion(
-                            quizId,
-                            questionEntity.id,
-                            selected,
-                            0,
-                          );
-                          showBottomSheet(
-                            context: context,
-                            builder:
-                                (_) => ExplanationBottomSheet(
-                                  explanation: questionEntity.explanation,
-                                ),
-                          );
-                        }
-                      },
-                    );
-                  },
-                ),
+                _buildSubmitButton(context),
               ],
             ),
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildSubmitButton(BuildContext context) {
+    return BlocBuilder<QuizCubit, QuizSettingsState>(
+      builder: (context, state) {
+        final selected = state.selectedMcqOptions[questionEntity.id];
+        final isDisabled = state.disabledQuestions[questionEntity.id] ?? false;
+        final isCorrect = selected == questionEntity.correctAnswer;
+
+        return CustomButton(
+          backgroundColor: AppColors.primary,
+          textColor: AppColors.onTertiary,
+          text: 'Submit',
+          onPressed:
+              isDisabled
+                  ? null
+                  : () => _handleSubmission(context, selected, isCorrect),
+        );
+      },
+    );
+  }
+
+  void _handleSubmission(
+    BuildContext context,
+    String? selected,
+    bool isCorrect,
+  ) {
+    final cubit = SetupSeviceLocator.sl<QuizCubit>();
+    final questionId = questionEntity.id!;
+    final level = questionEntity.level;
+
+    if (isCorrect) {
+      cubit.insertQuizQuestion(quizId, questionId, level, selected, 1);
+      _goToNextPage();
+    } else {
+      cubit.disableQuestion(questionId);
+      _showExplanation(context, selected);
+    }
+  }
+
+  void _showExplanation(BuildContext context, String? selected) {
+    final cubit = SetupSeviceLocator.sl<QuizCubit>();
+    final questionId = questionEntity.id!;
+    final level = questionEntity.level;
+
+    showModalBottomSheet(
+      context: context,
+      isDismissible: false,
+      enableDrag: false,
+      builder:
+          (_) => ExplanationBottomSheet(
+            explanation: questionEntity.explanation,
+            onNext: () {
+              Navigator.of(context).pop();
+              cubit.insertQuizQuestion(quizId, questionId, level, selected, 0);
+              _goToNextPage();
+            },
+          ),
+    );
+  }
+
+  void _goToNextPage() {
+    pageController.nextPage(
+      duration: const Duration(milliseconds: 400),
+      curve: Curves.easeInOut,
     );
   }
 }

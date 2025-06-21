@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quizly_app/core/constants/media_query_extension.dart';
@@ -7,6 +9,7 @@ import 'package:quizly_app/core/utils/theme/text_styles.dart';
 import 'package:quizly_app/features/quiz/domain/entities/mcq_options_entity.dart';
 import 'package:quizly_app/features/quiz/presentation/manager/cubit/quiz_cubit.dart';
 import 'package:quizly_app/features/quiz/presentation/manager/cubit/quiz_state.dart';
+import 'package:quizly_app/features/quiz/presentation/views/quiz_views/widgets/mcq/quiz_mcq_option_tile.dart';
 
 class QuizMcqOptions extends StatelessWidget {
   final List<McqOptionsEntity> questionOptions;
@@ -22,93 +25,33 @@ class QuizMcqOptions extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<QuizCubit, QuizSettingsState>(
       builder: (context, state) {
-        final selectedIndex = state.selectedMcqOptions[questionId];
+        final selected = state.selectedMcqOptions[questionId];
+        final isDisabled = state.disabledQuestions[questionId] ?? false;
+
         return SingleChildScrollView(
           child: Column(
-            children: List.generate(questionOptions.length, (index) {
-              final isSelected =
-                  selectedIndex == questionOptions[index].optionText!;
+            children:
+                questionOptions.map((option) {
+                  final optionText = option.optionText!;
+                  final isSelected = selected == optionText;
 
-              return GestureDetector(
-                onTap: () {
-                  SetupSeviceLocator.sl<QuizCubit>().selectMcqOption(
-                    questionId,
-                    questionOptions[index].optionText!,
+                  return McqOptionTile(
+                    optionText: optionText,
+                    isSelected: isSelected,
+                    isDisabled: isDisabled,
+                    onTap: () {
+                      if (!isDisabled) {
+                        SetupSeviceLocator.sl<QuizCubit>().selectMcqOption(
+                          questionId,
+                          optionText,
+                        );
+                      }
+                    },
                   );
-                },
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                    vertical: context.screenHeight * 0.015,
-                  ),
-                  margin: EdgeInsets.only(bottom: context.screenHeight * 0.01),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(
-                      color:
-                          isSelected
-                              ? AppColors.primary
-                              : AppColors.onSurfaceDisabled,
-                      width: 1.5,
-                    ),
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: context.screenWidth * 0.06,
-                    ),
-                    child: mcqOptionContent(
-                      isSelected,
-                      context,
-                      questionOptions[index].optionText!,
-                    ),
-                  ),
-                ),
-              );
-            }),
+                }).toList(),
           ),
         );
       },
     );
   }
 }
-
-Widget mcqOptionContent(
-  bool isSelected,
-  BuildContext context,
-  String? optionText,
-) => Row(
-  children: [
-    Container(
-      width: 15,
-      height: 15,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        border: Border.all(
-          color: isSelected ? AppColors.primary : AppColors.onSurfaceDisabled,
-          width: 2,
-        ),
-      ),
-      child:
-          isSelected
-              ? Center(
-                child: Container(
-                  width: 10,
-                  height: 10,
-                  decoration: BoxDecoration(
-                    color: AppColors.primary,
-                    shape: BoxShape.circle,
-                  ),
-                ),
-              )
-              : null,
-    ),
-    SizedBox(width: context.screenWidth * 0.04),
-    Expanded(
-      child: Text(
-        " $optionText",
-        style: AppTextStyles.bodyMedium.copyWith(
-          color: isSelected ? AppColors.primary : AppColors.onSurface,
-        ),
-      ),
-    ),
-  ],
-);

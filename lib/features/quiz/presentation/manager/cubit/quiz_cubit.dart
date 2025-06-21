@@ -67,7 +67,10 @@ class QuizCubit extends Cubit<QuizSettingsState> {
   Future<void> insertQuizQuestion(
     int? quizId,
     int? questionId,
+    String? questionLevel,
+
     String? userAnswer,
+
     int? isCorrect,
   ) async {
     emit(state.copyWith(insertLoading: true));
@@ -75,10 +78,11 @@ class QuizCubit extends Cubit<QuizSettingsState> {
         InsertQuizQuestionParamEntity(
           quizId: quizId,
           questionId: questionId,
+          questionLevel: questionLevel,
           userAnswer: userAnswer,
           isCorrect: isCorrect,
         );
-    log("ehhhhhhh ${insertQuizQuestionParamEntity}");
+    log("ehhhhhhh ${insertQuizQuestionParamEntity.questionLevel}");
     final result = await _insertQuizQuestionUseCase.call(
       insertQuizQuestionParamEntity,
     );
@@ -96,5 +100,12 @@ class QuizCubit extends Cubit<QuizSettingsState> {
         emit(state.copyWith(insertLoading: false, insertSuccess: true));
       },
     );
+  }
+
+  final Map<int, bool> disabledQuestions = {};
+
+  void disableQuestion(int questionId) {
+    // disabledQuestions[questionId] = true;
+    emit(state.copyWith(disabledQuestions: {questionId: true}));
   }
 }

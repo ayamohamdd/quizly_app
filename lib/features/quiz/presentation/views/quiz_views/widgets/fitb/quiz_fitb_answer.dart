@@ -10,19 +10,14 @@ import 'package:quizly_app/features/quiz/presentation/manager/cubit/quiz_state.d
 class QuizFitbAnswer extends StatefulWidget {
   const QuizFitbAnswer({super.key, required this.questionId});
   final int? questionId;
+
   @override
   State<QuizFitbAnswer> createState() => _QuizFitbAnswerState();
 }
 
 class _QuizFitbAnswerState extends State<QuizFitbAnswer> {
   final _formKey = GlobalKey<FormState>();
-
-  TextEditingController controller = TextEditingController();
-  @override
-  void initState() {
-    super.initState();
-    controller = TextEditingController();
-  }
+  final TextEditingController controller = TextEditingController();
 
   @override
   void dispose() {
@@ -34,52 +29,55 @@ class _QuizFitbAnswerState extends State<QuizFitbAnswer> {
   Widget build(BuildContext context) {
     return BlocBuilder<QuizCubit, QuizSettingsState>(
       builder: (context, state) {
+        final isDisabled = state.disabledQuestions[widget.questionId] ?? false;
+
         return Form(
           key: _formKey,
           child: TextFormField(
-            autovalidateMode: AutovalidateMode.onUserInteraction,
+            enabled: !isDisabled,
             controller: controller,
-            decoration: InputDecoration(
-              hintText: "Answer here",
-              contentPadding: EdgeInsets.symmetric(
-                horizontal: context.screenWidth * 0.05,
-                vertical: context.screenHeight * 0.01,
-              ),
-              hintStyle: AppTextStyles.bodyMedium,
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: const BorderSide(
-                  color: AppColors.onSurfaceDisabled,
-                  width: 1,
-                ),
-              ),
-              focusedBorder: const OutlineInputBorder(
-                borderSide: BorderSide(color: AppColors.primary, width: 1),
-              ),
-              errorBorder: const OutlineInputBorder(
-                borderSide: BorderSide(color: AppColors.error, width: 1),
-              ),
-              border: const OutlineInputBorder(
-                borderSide: BorderSide(color: AppColors.primary, width: 1),
-              ),
-            ),
-            validator: (value) {
-              if (value!.isEmpty) {
-                return "Value cannot be empty";
-              }
-              return null;
-            },
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            decoration: _inputDecoration(context),
+            validator:
+                (value) => value!.isEmpty ? "Value cannot be empty" : null,
             onChanged: (value) {
               if (_formKey.currentState!.validate()) {
                 SetupSeviceLocator.sl<QuizCubit>().setFITBAnswer(
                   widget.questionId!,
-                  controller.text,
+                  value,
                 );
               }
             },
           ),
         );
       },
+    );
+  }
+
+  InputDecoration _inputDecoration(BuildContext context) {
+    return InputDecoration(
+      hintText: "Answer here",
+      contentPadding: EdgeInsets.symmetric(
+        horizontal: context.screenWidth * 0.05,
+        vertical: context.screenHeight * 0.01,
+      ),
+      hintStyle: AppTextStyles.bodyMedium,
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+        borderSide: const BorderSide(
+          color: AppColors.onSurfaceDisabled,
+          width: 1,
+        ),
+      ),
+      focusedBorder: const OutlineInputBorder(
+        borderSide: BorderSide(color: AppColors.primary, width: 1),
+      ),
+      errorBorder: const OutlineInputBorder(
+        borderSide: BorderSide(color: AppColors.error, width: 1),
+      ),
+      border: const OutlineInputBorder(
+        borderSide: BorderSide(color: AppColors.primary, width: 1),
+      ),
     );
   }
 }

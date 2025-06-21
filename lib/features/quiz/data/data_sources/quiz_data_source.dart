@@ -10,9 +10,10 @@ abstract class QuizDataSource {
     int numberOfQuestions,
   );
 
-  Future<void> insertQuizQuestion(
+  Future<int> insertQuizQuestion(
     int quizId,
     int questionId,
+    String questionLevel,
     String userAnswer,
     int isCorrect,
   );
@@ -56,15 +57,17 @@ class QuizDataSourceImpl extends QuizDataSource {
   }
 
   @override
-  Future<void> insertQuizQuestion(
+  Future<int> insertQuizQuestion(
     int? quizId,
     int? questionId,
+    String? questionLevel,
     String? userAnswer,
     int? isCorrect,
   ) async {
-    await sqfliteProvider.insertQuizQuestion(
+    return await sqfliteProvider.insertQuizQuestion(
       quizId!,
       questionId!,
+      questionLevel!,
       userAnswer!,
       isCorrect!,
     );

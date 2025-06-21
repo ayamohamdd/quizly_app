@@ -2,10 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:quizly_app/core/constants/media_query_extension.dart';
 import 'package:quizly_app/core/utils/theme/app_colors.dart';
 import 'package:quizly_app/core/utils/theme/text_styles.dart';
+import 'package:quizly_app/core/widgets/custom_button.dart';
 
 class ExplanationBottomSheet extends StatelessWidget {
-  const ExplanationBottomSheet({super.key, this.explanation});
+  const ExplanationBottomSheet({
+    super.key,
+    required this.explanation,
+    required this.onNext,
+  });
   final String? explanation;
+  final void Function()? onNext;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -28,9 +35,11 @@ class ExplanationBottomSheet extends StatelessWidget {
         ],
       ),
       child: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: context.screenWidth * 0.05,
-          vertical: context.screenHeight * 0.03,
+        padding: EdgeInsets.only(
+          left: context.screenWidth * 0.05,
+          right: context.screenWidth * 0.05,
+
+          top: context.screenHeight * 0.03,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,6 +60,13 @@ class ExplanationBottomSheet extends StatelessWidget {
             Text(
               explanation!,
               style: AppTextStyles.bodyMedium.copyWith(fontSize: 17),
+            ),
+            SizedBox(height: context.screenHeight * 0.025),
+            CustomButton(
+              backgroundColor: AppColors.primary,
+              textColor: AppColors.surface,
+              text: 'Next',
+              onPressed: onNext,
             ),
           ],
         ),

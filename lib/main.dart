@@ -15,8 +15,8 @@ void main() async {
   await SetupSeviceLocator.init();
   // Bloc.observer = const SimpleBlocObserver();
   SqfliteProvider sqfliteProvider = SqfliteProvider();
-  // log("message ${await sqfliteProvider.insertQuiz(1)}");
-  runApp(DevicePreview(builder: (context) => const MyApp()));
+  log("message ${await sqfliteProvider.getQuizScorePerLevel( 13)}");
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {

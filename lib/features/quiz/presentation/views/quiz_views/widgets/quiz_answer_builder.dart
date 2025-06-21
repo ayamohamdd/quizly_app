@@ -70,7 +70,7 @@ class QuizAnswerBuilder extends StatelessWidget {
                             context: context,
                             builder: (context) {
                               return ExplanationBottomSheet(
-                                explanation: explanation,
+                                explanation: explanation, onNext: () {  },
                               );
                             },
                           );

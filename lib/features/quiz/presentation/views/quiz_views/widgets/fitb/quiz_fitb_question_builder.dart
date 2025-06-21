@@ -27,13 +27,14 @@ class QuizFitbAnswerBuilder extends StatelessWidget {
   final int questionIndex;
   final int questionsLength;
   final int quizId;
+
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
       slivers: [
         SliverFillRemaining(
           child: GestureDetector(
-            onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+            onTap: () => FocusScope.of(context).unfocus(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -50,53 +51,76 @@ class QuizFitbAnswerBuilder extends StatelessWidget {
                 ),
                 SizedBox(height: context.screenHeight * 0.05),
                 Expanded(child: QuizFitbAnswer(questionId: questionEntity.id)),
-                BlocBuilder<QuizCubit, QuizSettingsState>(
-                  builder: (context, state) {
-                    final answer = state.fitbAnswers[questionEntity.id]?.trim();
-                    final correct =
-                        state.questions![questionIndex].correctAnswer;
-
-                    return CustomButton(
-                      backgroundColor: AppColors.primary,
-                      textColor: AppColors.onTertiary,
-                      text: 'Submit',
-                      onPressed: () {
-                        if (answer != null && answer.toLowerCase() == correct) {
-                          FocusManager.instance.primaryFocus?.unfocus();
-                          SetupSeviceLocator.sl<QuizCubit>().insertQuizQuestion(
-                            quizId,
-                            questionEntity.id,
-                            answer,
-                            1,
-                          );
-                          pageController.nextPage(
-                            duration: Duration(milliseconds: 400),
-                            curve: Curves.easeInOut,
-                          );
-                        } else {
-                          SetupSeviceLocator.sl<QuizCubit>().insertQuizQuestion(
-                            quizId,
-                            questionEntity.id,
-                            answer,
-                            0,
-                          );
-                          showBottomSheet(
-                            context: context,
-                            builder:
-                                (_) => ExplanationBottomSheet(
-                                  explanation: questionEntity.explanation,
-                                ),
-                          );
-                        }
-                      },
-                    );
-                  },
-                ),
+                _buildSubmitButton(context),
               ],
             ),
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildSubmitButton(BuildContext context) {
+    return BlocBuilder<QuizCubit, QuizSettingsState>(
+      builder: (context, state) {
+        final answer = state.fitbAnswers[questionEntity.id]?.trim();
+        final correct = state.questions![questionIndex].correctAnswer;
+        final isDisabled = state.disabledQuestions[questionEntity.id] ?? false;
+
+        return CustomButton(
+          backgroundColor: AppColors.primary,
+          textColor: AppColors.onTertiary,
+          text: 'Submit',
+          onPressed:
+              isDisabled
+                  ? null
+                  : () => _handleSubmit(context, answer, correct!),
+        );
+      },
+    );
+  }
+
+  void _handleSubmit(BuildContext context, String? answer, String correct) {
+    final cubit = SetupSeviceLocator.sl<QuizCubit>();
+    final questionId = questionEntity.id!;
+    final level = questionEntity.level;
+
+    FocusScope.of(context).unfocus();
+
+    if (answer != null && answer.toLowerCase() == correct) {
+      cubit.insertQuizQuestion(quizId, questionId, level, answer, 1);
+      _goToNextPage();
+    } else {
+      cubit.disableQuestion(questionId);
+      _showExplanation(context, answer);
+    }
+  }
+
+  void _showExplanation(BuildContext context, String? answer) {
+    final cubit = SetupSeviceLocator.sl<QuizCubit>();
+    final questionId = questionEntity.id!;
+    final level = questionEntity.level;
+
+    showModalBottomSheet(
+      context: context,
+      isDismissible: false,
+      enableDrag: false,
+      builder:
+          (_) => ExplanationBottomSheet(
+            explanation: questionEntity.explanation,
+            onNext: () {
+              Navigator.of(context).pop();
+              cubit.insertQuizQuestion(quizId, questionId, level, answer, 0);
+              _goToNextPage();
+            },
+          ),
+    );
+  }
+
+  void _goToNextPage() {
+    pageController.nextPage(
+      duration: const Duration(milliseconds: 400),
+      curve: Curves.easeInOut,
     );
   }
 }
