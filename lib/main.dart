@@ -14,8 +14,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SetupSeviceLocator.init();
   // Bloc.observer = const SimpleBlocObserver();
-  // SqfliteProvider sqfliteProvider = SqfliteProvider();
-  // log("message ${await sqfliteProvider.getQuizzes()}");
+  SqfliteProvider sqfliteProvider = SqfliteProvider();
+  // log("message ${await sqfliteProvider.insertQuiz(1)}");
   runApp(DevicePreview(builder: (context) => const MyApp()));
 }
 

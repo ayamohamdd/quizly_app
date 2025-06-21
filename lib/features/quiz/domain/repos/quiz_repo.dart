@@ -8,4 +8,10 @@ abstract class QuizRepo {
     List<String> levels,
     int numberOfQuestions,
   );
+   Future<Either<Failure,void>> insertQuizQuestion(
+    int? quizId,
+    int? questionId,
+    String? userAnswer,
+    int? isCorrect,
+  );
 }

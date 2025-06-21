@@ -1,5 +1,3 @@
-
-
 import 'package:quizly_app/core/sqflite/sqflite_provider.dart';
 import 'package:quizly_app/features/quiz/data/models/mcq_options_model.dart';
 import 'package:quizly_app/features/quiz/data/models/quiz_question_model.dart';
@@ -10,6 +8,13 @@ abstract class QuizDataSource {
     int skillId,
     List<String> levels,
     int numberOfQuestions,
+  );
+
+  Future<void> insertQuizQuestion(
+    int quizId,
+    int questionId,
+    String userAnswer,
+    int isCorrect,
   );
 }
 
@@ -44,7 +49,24 @@ class QuizDataSourceImpl extends QuizDataSource {
   Future<List<McqOptionsEntity>> fetchMcqOptions(int questionId) async {
     final result = await sqfliteProvider.getMcqOptions(questionId);
     List<McqOptionsEntity> options =
-        result.map((row) => McqOptionsModel.fromDatabase(row) as McqOptionsEntity).toList();
+        result
+            .map((row) => McqOptionsModel.fromDatabase(row) as McqOptionsEntity)
+            .toList();
     return options;
+  }
+
+  @override
+  Future<void> insertQuizQuestion(
+    int? quizId,
+    int? questionId,
+    String? userAnswer,
+    int? isCorrect,
+  ) async {
+    await sqfliteProvider.insertQuizQuestion(
+      quizId!,
+      questionId!,
+      userAnswer!,
+      isCorrect!,
+    );
   }
 }

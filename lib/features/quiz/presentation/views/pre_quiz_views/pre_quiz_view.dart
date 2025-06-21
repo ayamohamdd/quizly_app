@@ -13,8 +13,8 @@ import 'package:quizly_app/features/quiz/presentation/views/pre_quiz_views/widge
 import 'package:quizly_app/features/quiz/presentation/views/pre_quiz_views/widgets/quiz_number_of_questions.dart';
 
 class PreQuizView extends StatefulWidget {
-  const PreQuizView({super.key});
-
+  const PreQuizView({super.key, required this.quizId});
+  final int quizId;
   @override
   State<PreQuizView> createState() => _PreQuizViewState();
 }
@@ -42,7 +42,7 @@ class _PreQuizViewState extends State<PreQuizView> {
             SizedBox(height: context.screenHeight * 0.02),
             QuizNumberOfQuestions(numberOfQuestions: numberOfQuestions),
             Spacer(),
-            BlocBuilder<QuizCubit, QuizSettingsState>(
+            BlocConsumer<QuizCubit, QuizSettingsState>(
               builder: (context, state) {
                 final bool isSelected =
                     state.selectedLevels.isNotEmpty &&
@@ -64,10 +64,15 @@ class _PreQuizViewState extends State<PreQuizView> {
                       state.selectedNumber!,
                       state.selectedLevels,
                     );
-
-                    GoRouter.of(context).pushReplacement(AppRouter.quizView);
                   },
                 );
+              },
+              listener: (BuildContext context, QuizSettingsState state) {
+                if (state.isSuccess == true) {
+                  GoRouter.of(
+                    context,
+                  ).pushReplacement(AppRouter.quizView, extra: widget.quizId);
+                }
               },
             ),
           ],

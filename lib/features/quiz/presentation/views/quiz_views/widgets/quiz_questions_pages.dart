@@ -5,9 +5,13 @@ import 'package:quizly_app/features/quiz/presentation/views/quiz_views/widgets/f
 import 'package:quizly_app/features/quiz/presentation/views/quiz_views/widgets/mcq/quiz_mcq_question_builder.dart';
 
 class QuizQuestionsPages extends StatefulWidget {
-  const QuizQuestionsPages({super.key, required this.question});
+  const QuizQuestionsPages({
+    super.key,
+    required this.question,
+    required this.quizId,
+  });
   final List<QuizQuestionEntity> question;
-
+  final int quizId;
   @override
   State<QuizQuestionsPages> createState() => _QuizQuestionsPagesState();
 }
@@ -35,7 +39,7 @@ class _QuizQuestionsPagesState extends State<QuizQuestionsPages> {
         vertical: context.screenHeight * 0.03,
       ),
       child: PageView.builder(
-        physics:NeverScrollableScrollPhysics(),
+        physics: NeverScrollableScrollPhysics(),
         controller: pageController,
         itemCount: widget.question.length,
         itemBuilder: (context, index) {
@@ -45,9 +49,11 @@ class _QuizQuestionsPagesState extends State<QuizQuestionsPages> {
               questionEntity: widget.question[index],
               questionIndex: index,
               questionsLength: widget.question.length,
+              quizId: widget.quizId,
             );
           } else {
             return QuizFitbAnswerBuilder(
+              quizId: widget.quizId,
               pageController: pageController,
               questionEntity: widget.question[index],
               questionIndex: index,

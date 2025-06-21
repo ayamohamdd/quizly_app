@@ -15,6 +15,11 @@ class QuizSettingsState extends QuizState {
   final List<QuizQuestionEntity>? questions;
   final Map<int, String> selectedMcqOptions;
   final Map<int, String> fitbAnswers;
+  final bool? insertLoading;
+
+  final bool? insertSuccess;
+  final bool? insertError;
+
   QuizSettingsState({
     this.isLoading,
     this.isError,
@@ -25,6 +30,9 @@ class QuizSettingsState extends QuizState {
     this.selectedNumber,
     this.selectedMcqOptions = const {},
     this.fitbAnswers = const {},
+    this.insertLoading,
+    this.insertSuccess,
+    this.insertError,
   });
 
   bool get isValid => selectedLevels.isNotEmpty && selectedNumber != null;
@@ -39,6 +47,10 @@ class QuizSettingsState extends QuizState {
     List<QuizQuestionEntity>? questions,
     Map<int, String>? selectedMcqOptions,
     Map<int, String>? fitbAnswers,
+    final bool? insertLoading,
+
+    final bool? insertSuccess,
+    final bool? insertError,
   }) {
     return QuizSettingsState(
       isLoading: isLoading ?? this.isLoading,
@@ -50,6 +62,9 @@ class QuizSettingsState extends QuizState {
       questions: questions ?? this.questions,
       selectedMcqOptions: selectedMcqOptions ?? this.selectedMcqOptions,
       fitbAnswers: fitbAnswers ?? this.fitbAnswers,
+      insertLoading: insertLoading ?? this.insertLoading,
+      insertSuccess: insertSuccess ?? this.insertSuccess,
+      insertError: insertError ?? this.insertError,
     );
   }
 }

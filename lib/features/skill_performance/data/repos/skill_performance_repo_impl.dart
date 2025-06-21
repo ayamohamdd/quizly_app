@@ -8,10 +8,10 @@ class SkillPerformanceRepoImpl extends SkillPerformanceRepo {
   SkillPerformanceDataSource skillPerformanceDataSource;
   SkillPerformanceRepoImpl({required this.skillPerformanceDataSource});
   @override
-  Future<Either<Failure, void>> createQuiz(int? skillId) async {
+  Future<Either<Failure, int>> createQuiz(int? skillId) async {
     try {
-      await skillPerformanceDataSource.createQuiz(skillId);
-      return Right("Quiz Created");
+      final quizId = await skillPerformanceDataSource.createQuiz(skillId);
+      return Right(quizId);
     } catch (e) {
       return Left(DatabaseFailure.insertError(table: "quizzes"));
     }

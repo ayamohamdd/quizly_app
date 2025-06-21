@@ -18,7 +18,7 @@ class SkillPerformanceCubit extends Cubit<SkillPerformanceState> {
         emit(SkillPerformanceCreateQuizFailure(error: l.message));
       },
       (r) {
-        emit(SkillPerformanceCreateQuizSuccess());
+        emit(SkillPerformanceCreateQuizSuccess(quizId: r));
       },
     );
   }

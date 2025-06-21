@@ -10,7 +10,6 @@ import 'package:quizly_app/features/quiz/presentation/manager/cubit/quiz_state.d
 class QuizFitbAnswer extends StatefulWidget {
   const QuizFitbAnswer({super.key, required this.questionId});
   final int? questionId;
-  // final String? answer;
   @override
   State<QuizFitbAnswer> createState() => _QuizFitbAnswerState();
 }
@@ -22,8 +21,6 @@ class _QuizFitbAnswerState extends State<QuizFitbAnswer> {
   @override
   void initState() {
     super.initState();
-    // final existingAnswer =
-    //     context.read<QuizCubit>().getFITBAnswer(widget.quesId!);
     controller = TextEditingController();
   }
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quizly_app/core/constants/media_query_extension.dart';
+import 'package:quizly_app/core/di/setup_service_locator.dart';
 import 'package:quizly_app/core/utils/theme/app_colors.dart';
 import 'package:quizly_app/core/utils/theme/text_styles.dart';
 import 'package:quizly_app/core/widgets/custom_button.dart';
@@ -15,17 +16,17 @@ class QuizFitbAnswerBuilder extends StatelessWidget {
   const QuizFitbAnswerBuilder({
     super.key,
     required this.pageController,
-
     required this.questionIndex,
     required this.questionsLength,
     required this.questionEntity,
+    required this.quizId,
   });
 
   final PageController pageController;
   final QuizQuestionEntity questionEntity;
   final int questionIndex;
   final int questionsLength;
-
+  final int quizId;
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
@@ -62,12 +63,23 @@ class QuizFitbAnswerBuilder extends StatelessWidget {
                       onPressed: () {
                         if (answer != null && answer.toLowerCase() == correct) {
                           FocusManager.instance.primaryFocus?.unfocus();
-
+                          SetupSeviceLocator.sl<QuizCubit>().insertQuizQuestion(
+                            quizId,
+                            questionEntity.id,
+                            answer,
+                            1,
+                          );
                           pageController.nextPage(
                             duration: Duration(milliseconds: 400),
                             curve: Curves.easeInOut,
                           );
                         } else {
+                          SetupSeviceLocator.sl<QuizCubit>().insertQuizQuestion(
+                            quizId,
+                            questionEntity.id,
+                            answer,
+                            0,
+                          );
                           showBottomSheet(
                             context: context,
                             builder:

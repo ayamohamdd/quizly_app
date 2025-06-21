@@ -4,6 +4,7 @@ import 'package:quizly_app/features/quiz/data/data_sources/quiz_data_source.dart
 import 'package:quizly_app/features/quiz/data/repos/quiz_repo_impl.dart';
 import 'package:quizly_app/features/quiz/domain/repos/quiz_repo.dart';
 import 'package:quizly_app/features/quiz/domain/use_cases/fetch_questions_use_case.dart';
+import 'package:quizly_app/features/quiz/domain/use_cases/insert_quiz_question_use_case.dart';
 import 'package:quizly_app/features/quiz/presentation/manager/cubit/quiz_cubit.dart';
 import 'package:quizly_app/features/skill_performance/data/data_sources/skill_performance_data_source.dart';
 import 'package:quizly_app/features/skill_performance/data/repos/skill_performance_repo_impl.dart';
@@ -80,6 +81,9 @@ class SetupSeviceLocator {
 
     sl.registerLazySingleton<FetchQuestionsUseCase>(
       () => FetchQuestionsUseCase(quizRepo: sl<QuizRepo>()),
+    );
+     sl.registerLazySingleton<InsertQuizQuestionUseCase>(
+      () => InsertQuizQuestionUseCase(quizRepo: sl<QuizRepo>()),
     );
   }
 

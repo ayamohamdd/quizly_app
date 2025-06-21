@@ -25,23 +25,26 @@ class SkillPerformanceView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Text(""),
-            BlocBuilder<SkillPerformanceCubit, SkillPerformanceState>(
+            BlocConsumer<SkillPerformanceCubit, SkillPerformanceState>(
               builder: (context, state) {
                 return CustomButton(
                   backgroundColor: AppColors.primary,
                   textColor: AppColors.surface,
                   text: "Create Quiz",
+                  isLoading: state is SkillPerformanceCreateQuizLoading,
                   onPressed: () {
                     SetupSeviceLocator.sl<SkillPerformanceCubit>().createQuiz(
                       skillId,
                     );
-                    if (state is SkillPerformanceCreateQuizSuccess) {
-                      GoRouter.of(
-                        context,
-                      ).pushReplacement(AppRouter.preQuizView);
-                    }
                   },
                 );
+              },
+              listener: (BuildContext context, SkillPerformanceState state) {
+                if (state is SkillPerformanceCreateQuizSuccess) {
+                  GoRouter.of(
+                    context,
+                  ).pushReplacement(AppRouter.preQuizView, extra: state.quizId);
+                }
               },
             ),
           ],

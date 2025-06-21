@@ -58,18 +58,20 @@ class AppRouter {
       GoRoute(
         path: preQuizView,
         builder: (context, state) {
+          final int? quizId = state.extra as int?;
           return BlocProvider.value(
             value: SetupSeviceLocator.sl<QuizCubit>(),
-            child: PreQuizView(),
+            child: PreQuizView(quizId: quizId!),
           );
         },
       ),
       GoRoute(
         path: quizView,
         builder: (context, state) {
+          final int? quizId = state.extra as int?;
           return BlocProvider.value(
             value: SetupSeviceLocator.sl<QuizCubit>(),
-            child: QuizView(),
+            child: QuizView(quizId: quizId!),
           );
         },
       ),

@@ -23,7 +23,27 @@ class QuizRepoImpl extends QuizRepo {
       );
       return Right(questions);
     } catch (e) {
-      return Left(DatabaseFailure.queryError(query:  "SELECT * FROM questions"));
+      return Left(DatabaseFailure.queryError(query: "SELECT * FROM questions"));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> insertQuizQuestion(
+    int? quizId,
+    int? questionId,
+    String? userAnswer,
+    int? isCorrect,
+  ) async {
+    try {
+      await quizDataSource.insertQuizQuestion(
+        quizId!,
+        questionId!,
+        userAnswer!,
+        isCorrect!,
+      );
+      return Right("Question is Inserted");
+    } catch (e) {
+      return Left(DatabaseFailure.insertError(table: "quiz_questions"));
     }
   }
 }

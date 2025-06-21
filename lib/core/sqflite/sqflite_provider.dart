@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:flutter/services.dart' show ByteData, rootBundle;
@@ -101,8 +103,24 @@ class SqfliteProvider {
     ''');
   }
 
-  Future<void> insertQuiz(int skillId) async {
-    await db!.insert("quizzes", {"skill_id": skillId});
+  Future<void> insertQuizQuestion(
+    int quizId,
+    int questionId,
+    String userAnswer,
+    int isCorrect,
+  ) async {
+    log("quizId $quizId");
+    final int id = await SqfliteProvider.db!.insert('quiz_questions', {
+      'quiz_id': quizId,
+      'question_id': questionId,
+      'user_answer': userAnswer,
+      'is_correct': isCorrect == 1 ? 1 : 0,
+    });
+    log("$id");
+  }
+
+  Future<int> insertQuiz(int skillId) async {
+    return await db!.insert("quizzes", {"skill_id": skillId});
   }
 
   Future<List<Map<String, Object?>>> getQuizzes() async {

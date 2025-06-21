@@ -3,14 +3,19 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:quizly_app/core/di/setup_service_locator.dart';
 import 'package:quizly_app/features/quiz/domain/entities/fetch_questions_param_entity.dart';
+import 'package:quizly_app/features/quiz/domain/entities/insert_quiz_question_param_entity.dart';
 import 'package:quizly_app/features/quiz/domain/use_cases/fetch_questions_use_case.dart';
+import 'package:quizly_app/features/quiz/domain/use_cases/insert_quiz_question_use_case.dart';
 import 'package:quizly_app/features/quiz/presentation/manager/cubit/quiz_state.dart';
 
 class QuizCubit extends Cubit<QuizSettingsState> {
   QuizCubit()
     : _fetchQuestionsUseCase = SetupSeviceLocator.sl.get(),
+      _insertQuizQuestionUseCase = SetupSeviceLocator.sl.get(),
+
       super(QuizSettingsState());
   final FetchQuestionsUseCase _fetchQuestionsUseCase;
+  final InsertQuizQuestionUseCase _insertQuizQuestionUseCase;
 
   void toggleLevel(String level) {
     final newSet = List<String>.from(state.selectedLevels);
@@ -57,5 +62,39 @@ class QuizCubit extends Cubit<QuizSettingsState> {
     final updatedAnswers = Map<int, String>.from(state.fitbAnswers);
     updatedAnswers[questionId] = answer;
     emit(state.copyWith(fitbAnswers: updatedAnswers));
+  }
+
+  Future<void> insertQuizQuestion(
+    int? quizId,
+    int? questionId,
+    String? userAnswer,
+    int? isCorrect,
+  ) async {
+    emit(state.copyWith(insertLoading: true));
+    InsertQuizQuestionParamEntity insertQuizQuestionParamEntity =
+        InsertQuizQuestionParamEntity(
+          quizId: quizId,
+          questionId: questionId,
+          userAnswer: userAnswer,
+          isCorrect: isCorrect,
+        );
+    log("ehhhhhhh ${insertQuizQuestionParamEntity}");
+    final result = await _insertQuizQuestionUseCase.call(
+      insertQuizQuestionParamEntity,
+    );
+    result.fold(
+      (l) {
+        emit(
+          state.copyWith(
+            insertLoading: false,
+            insertError: true,
+            errorMessage: l.message,
+          ),
+        );
+      },
+      (r) {
+        emit(state.copyWith(insertLoading: false, insertSuccess: true));
+      },
+    );
   }
 }
