@@ -89,7 +89,8 @@ class AppRouter {
           return BlocProvider.value(
             value:
                 SetupSeviceLocator.sl<QuizPerformanceCubit>()
-                  ..getQuizPerformance(quizId ?? 32),
+                  ..getQuizPerformance(quizId ?? 0)
+                  ..getQuizWrongQuestions(quizId ?? 0),
             child: QuizPerformanceView(),
           );
         },

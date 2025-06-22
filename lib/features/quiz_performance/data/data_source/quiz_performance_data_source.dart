@@ -2,10 +2,12 @@ import 'dart:developer';
 
 import 'package:quizly_app/core/sqflite/sqflite_provider.dart';
 import 'package:quizly_app/features/quiz_performance/data/models/quiz_performance_model.dart';
+import 'package:quizly_app/features/quiz_performance/data/models/quiz_wrong_question_model.dart';
 
 abstract class QuizPerformanceDataSource {
   Future<List<QuizPerformanceModel>> getQuizPerformancePerLevel(int? quizId);
   double getQuizScore(List<QuizPerformanceModel> quizPerformance);
+  Future<List<QuizWrongQuestionModel>> fetchWrongQuestions(int? quizId);
 }
 
 class QuizPerformanceDataSourceImpl extends QuizPerformanceDataSource {
@@ -34,14 +36,29 @@ class QuizPerformanceDataSourceImpl extends QuizPerformanceDataSource {
 
     for (var levelScore in quizPerformance!) {
       // for (var levelScore in quizPerformance!) {
-  log('Level: ${levelScore.questionLevel}, total: ${levelScore.total}, correct: ${levelScore.correct}');
-// }
+      log(
+        'Level: ${levelScore.questionLevel}, total: ${levelScore.total}, correct: ${levelScore.correct}',
+      );
+      // }
 
-      totalQuestions += levelScore.total??0;
-      totalScore += levelScore.correct??0;
+      totalQuestions += levelScore.total ?? 0;
+      totalScore += levelScore.correct ?? 0;
     }
     totalScore /= totalQuestions;
 
     return totalScore * 100;
+  }
+
+  @override
+  Future<List<QuizWrongQuestionModel>> fetchWrongQuestions(int? quizId) async {
+    final quizWrongQuestionsData = await sqfliteProvider.getWrongQuestions(
+      quizId!,
+    );
+    List<QuizWrongQuestionModel> quizWrongQuestionsList =
+        quizWrongQuestionsData
+            .map((map) => QuizWrongQuestionModel.fromDatabase(map))
+            .toList();
+    log("datasource $quizWrongQuestionsList");
+    return quizWrongQuestionsList;
   }
 }

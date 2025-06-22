@@ -72,9 +72,7 @@ class SqfliteProvider {
     return response;
   }
 
-  Future<List<Map<String, dynamic>>> getMcqOptions(
-    int questionId,
-  ) async {
+  Future<List<Map<String, dynamic>>> getMcqOptions(int questionId) async {
     final response = await db!.query(
       'mcq_options',
       where: 'question_id= ?',
@@ -167,7 +165,9 @@ class SqfliteProvider {
     );
   }
 
-  Future<List<Map<String, dynamic>>> getQuizPerformancePerLevel(int quizId) async {
+  Future<List<Map<String, dynamic>>> getQuizPerformancePerLevel(
+    int quizId,
+  ) async {
     final result = await db!.rawQuery(
       '''
       SELECT qq.question_level, 
@@ -181,6 +181,18 @@ class SqfliteProvider {
       [quizId],
     );
     log("result $result, $quizId");
+    return result;
+  }
+
+  Future<List<Map<String, dynamic>>> getWrongQuestions(int quizId) async {
+    final result = await db!.rawQuery('''
+      SELECT q.id, q.question_text, qq.user_answer, q.correct_answer
+      FROM questions q
+      JOIN quiz_questions qq ON q.id = qq.question_id
+      WHERE qq.is_correct = 0 AND qq.quiz_id = ?;
+    ''',[quizId]);
+
+    log("$result");
     return result;
   }
 }

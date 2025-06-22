@@ -9,6 +9,7 @@ import 'package:quizly_app/features/quiz/presentation/manager/cubit/quiz_cubit.d
 import 'package:quizly_app/features/quiz_performance/data/data_source/quiz_performance_data_source.dart';
 import 'package:quizly_app/features/quiz_performance/data/repos/quiz_performance_repo_impl.dart';
 import 'package:quizly_app/features/quiz_performance/domain/repos/quiz_performance_repo.dart';
+import 'package:quizly_app/features/quiz_performance/domain/use_cases/fetch_quiz_wrong_questions_use_case.dart';
 import 'package:quizly_app/features/quiz_performance/domain/use_cases/get_quiz_performance_use_case.dart';
 import 'package:quizly_app/features/quiz_performance/domain/use_cases/get_quiz_score_use_case.dart';
 import 'package:quizly_app/features/quiz_performance/presentation/manager/cubit/quiz_performance_cubit.dart';
@@ -105,9 +106,13 @@ class SetupSeviceLocator {
         quizPerformanceRepo: sl<QuizPerformanceRepo>(),
       ),
     );
-
     sl.registerLazySingleton<GetQuizScoreUseCase>(
       () => GetQuizScoreUseCase(quizPerformanceRepo: sl<QuizPerformanceRepo>()),
+    );
+    sl.registerLazySingleton<FetchQuizWrongQuestionsUseCase>(
+      () => FetchQuizWrongQuestionsUseCase(
+        quizPerformanceRepo: sl<QuizPerformanceRepo>(),
+      ),
     );
   }
 

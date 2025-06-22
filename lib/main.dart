@@ -11,15 +11,29 @@ import 'package:quizly_app/core/utils/bloc_observer.dart';
 import 'package:quizly_app/core/utils/theme/app_theme.dart';
 import 'package:quizly_app/features/quiz_performance/data/data_source/quiz_performance_data_source.dart';
 import 'package:quizly_app/features/quiz_performance/data/models/quiz_performance_model.dart';
+import 'package:quizly_app/features/quiz_performance/data/repos/quiz_performance_repo_impl.dart';
+import 'package:quizly_app/features/quiz_performance/domain/repos/quiz_performance_repo.dart';
+import 'package:quizly_app/features/quiz_performance/domain/use_cases/fetch_quiz_wrong_questions_use_case.dart';
+import 'package:quizly_app/features/quiz_performance/presentation/manager/cubit/quiz_performance_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SetupSeviceLocator.init();
   Bloc.observer = const SimpleBlocObserver();
-  // SqfliteProvider sqfliteProvider = SqfliteProvider();
-  // QuizPerformanceDataSource quizPerformanceDataSource =
-  //     QuizPerformanceDataSourceImpl(sqfliteProvider: sqfliteProvider);
+  SqfliteProvider sqfliteProvider = SqfliteProvider();
+  // log("${await sqfliteProvider.getWrongQuestions(71)}");
+  QuizPerformanceDataSource quizPerformanceDataSource =
+      QuizPerformanceDataSourceImpl(sqfliteProvider: sqfliteProvider);
+  quizPerformanceDataSource.fetchWrongQuestions(72);
+  QuizPerformanceRepo quizPerformanceRepo = QuizPerformanceRepoImpl(
+    quizPerformanceDataSource: quizPerformanceDataSource,
+  );
+  quizPerformanceRepo.fetchQuizWrongQuestions(72);
+  FetchQuizWrongQuestionsUseCase fetchQuizWrongQuestionsUseCase =
+      FetchQuizWrongQuestionsUseCase(quizPerformanceRepo: quizPerformanceRepo);
+  await fetchQuizWrongQuestionsUseCase.call(72);
 
+  SetupSeviceLocator.sl<QuizPerformanceCubit>().getQuizWrongQuestions(72);
   // List<QuizPerformanceModel> q = await quizPerformanceDataSource
   //     .getQuizPerformancePerLevel(33);
   // if (q.isNotEmpty) {
