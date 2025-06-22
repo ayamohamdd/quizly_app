@@ -41,7 +41,7 @@ class QuizMcqOptions extends StatelessWidget {
                     isDisabled: isDisabled,
                     onTap: () {
                       if (!isDisabled) {
-                        SetupSeviceLocator.sl<QuizCubit>().selectMcqOption(
+                    context.read<QuizCubit>().selectMcqOption(
                           questionId,
                           optionText,
                         );

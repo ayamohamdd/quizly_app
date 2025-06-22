@@ -6,13 +6,15 @@ import 'package:quizly_app/features/quiz_performance/domain/entities/quiz_perfor
 import 'package:quizly_app/features/quiz_performance/domain/repos/quiz_performance_repo.dart';
 
 class GetQuizPerformanceUseCase
-    extends UseCase<Future<Either<Failure, List<QuizPerformanceEntity>>>, int?> {
+    extends UseCase<Future<Either<Failure, List<QuizPerformanceModel>>>, int?> {
   final QuizPerformanceRepo quizPerformanceRepo;
 
   GetQuizPerformanceUseCase({required this.quizPerformanceRepo});
 
   @override
-  Future<Either<Failure, List<QuizPerformanceEntity>>> call([int? quizId]) async {
+  Future<Either<Failure, List<QuizPerformanceModel>>> call([
+    int? quizId,
+  ]) async {
     return await quizPerformanceRepo.getQuizPerformancePerLevel(quizId);
   }
 }

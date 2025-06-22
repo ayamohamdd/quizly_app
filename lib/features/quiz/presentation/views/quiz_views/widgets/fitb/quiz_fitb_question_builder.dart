@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:quizly_app/core/app_router/app_routers.dart';
 import 'package:quizly_app/core/constants/media_query_extension.dart';
 import 'package:quizly_app/core/di/setup_service_locator.dart';
 import 'package:quizly_app/core/utils/theme/app_colors.dart';
@@ -69,7 +71,7 @@ class QuizFitbAnswerBuilder extends StatelessWidget {
 
         return CustomButton(
           backgroundColor: AppColors.primary,
-                      borderColor: AppColors.primary,
+          borderColor: AppColors.primary,
 
           textColor: AppColors.onTertiary,
           text: 'Submit',
@@ -83,7 +85,7 @@ class QuizFitbAnswerBuilder extends StatelessWidget {
   }
 
   void _handleSubmit(BuildContext context, String? answer, String correct) {
-    final cubit = SetupSeviceLocator.sl<QuizCubit>();
+    final cubit =context.read<QuizCubit>();
     final questionId = questionEntity.id!;
     final level = questionEntity.level;
 
@@ -91,7 +93,7 @@ class QuizFitbAnswerBuilder extends StatelessWidget {
 
     if (answer != null && answer.toLowerCase() == correct) {
       cubit.insertQuizQuestion(quizId, questionId, level, answer, 1);
-      _goToNextPage();
+      _goToNextPage(context);
     } else {
       cubit.disableQuestion(questionId);
       _showExplanation(context, answer);
@@ -99,7 +101,7 @@ class QuizFitbAnswerBuilder extends StatelessWidget {
   }
 
   void _showExplanation(BuildContext context, String? answer) {
-    final cubit = SetupSeviceLocator.sl<QuizCubit>();
+    final cubit = context.read<QuizCubit>();
     final questionId = questionEntity.id!;
     final level = questionEntity.level;
 
@@ -113,16 +115,22 @@ class QuizFitbAnswerBuilder extends StatelessWidget {
             onNext: () {
               Navigator.of(context).pop();
               cubit.insertQuizQuestion(quizId, questionId, level, answer, 0);
-              _goToNextPage();
+              _goToNextPage(context);
             },
           ),
     );
   }
 
-  void _goToNextPage() {
-    pageController.nextPage(
-      duration: const Duration(milliseconds: 400),
-      curve: Curves.easeInOut,
-    );
+  void _goToNextPage(BuildContext context) {
+    if (questionIndex == questionsLength - 1) {
+      GoRouter.of(
+        context,
+      ).pushReplacement(AppRouter.quizPerformanceView, extra: quizId);
+    } else {
+      pageController.nextPage(
+        duration: const Duration(milliseconds: 400),
+        curve: Curves.easeInOut,
+      );
+    }
   }
 }

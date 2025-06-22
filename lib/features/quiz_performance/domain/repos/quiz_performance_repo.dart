@@ -4,9 +4,7 @@ import 'package:quizly_app/features/quiz_performance/data/models/quiz_performanc
 import 'package:quizly_app/features/quiz_performance/domain/entities/quiz_performance_entity.dart';
 
 abstract class QuizPerformanceRepo {
-  Future<Either<Failure, List<QuizPerformanceEntity>>>
+  Future<Either<Failure, List<QuizPerformanceModel>>>
   getQuizPerformancePerLevel(int? quizId);
-  Either<String, double> getQuizScore(
-    List<QuizPerformanceModel> quizPerformance,
-  );
+  double getQuizScore(List<QuizPerformanceModel> quizPerformance);
 }

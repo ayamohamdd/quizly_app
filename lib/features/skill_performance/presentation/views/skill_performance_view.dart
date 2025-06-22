@@ -34,9 +34,7 @@ class SkillPerformanceView extends StatelessWidget {
                   text: "Create Quiz",
                   isLoading: state is SkillPerformanceCreateQuizLoading,
                   onPressed: () {
-                    SetupSeviceLocator.sl<SkillPerformanceCubit>().createQuiz(
-                      skillId,
-                    );
+                    context.read<SkillPerformanceCubit>().createQuiz(skillId);
                   },
                 );
               },

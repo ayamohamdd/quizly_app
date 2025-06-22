@@ -30,7 +30,7 @@ class AppTheme {
         backgroundColor: AppColors.surface,
         elevation: 0,
         centerTitle: true,
-        iconTheme: IconThemeData(color: AppColors.onSurface),
+        // iconTheme: IconThemeData(color: AppColors.onSurface),
         titleTextStyle: TextStyle(
           color: AppColors.onSurface,
           fontSize: 20,

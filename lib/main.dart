@@ -15,17 +15,16 @@ import 'package:quizly_app/features/quiz_performance/data/models/quiz_performanc
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SetupSeviceLocator.init();
-  // Bloc.observer = const SimpleBlocObserver();
-  SqfliteProvider sqfliteProvider = SqfliteProvider();
-  QuizPerformanceDataSource quizPerformanceDataSource =
-      QuizPerformanceDataSourceImpl(sqfliteProvider: sqfliteProvider);
+  Bloc.observer = const SimpleBlocObserver();
+  // SqfliteProvider sqfliteProvider = SqfliteProvider();
+  // QuizPerformanceDataSource quizPerformanceDataSource =
+  //     QuizPerformanceDataSourceImpl(sqfliteProvider: sqfliteProvider);
 
-  List<QuizPerformanceModel> q = await quizPerformanceDataSource
-      .getQuizPerformancePerLevel(33);
-  log("ha $q");
-  if (q.isNotEmpty) {
-    log("message ${await quizPerformanceDataSource.getQuizScore(q)}");
-  }
+  // List<QuizPerformanceModel> q = await quizPerformanceDataSource
+  //     .getQuizPerformancePerLevel(33);
+  // if (q.isNotEmpty) {
+  //   log("message ${quizPerformanceDataSource.getQuizScore(q)}");
+  // }
   runApp(const MyApp());
 }
 

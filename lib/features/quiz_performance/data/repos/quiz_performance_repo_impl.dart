@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 import 'package:quizly_app/core/utils/errors/failure.dart';
 import 'package:quizly_app/features/quiz/data/data_sources/quiz_data_source.dart';
@@ -22,13 +24,12 @@ class QuizPerformanceRepoImpl extends QuizPerformanceRepo {
   }
 
   @override
-  Either<String, double> getQuizScore(
-    List<QuizPerformanceModel> quizPerformance,
-  ) {
+  double getQuizScore(List<QuizPerformanceModel> quizPerformance) {
     try {
-      return Right(quizPerformanceDataSource.getQuizScore(quizPerformance));
+      return quizPerformanceDataSource.getQuizScore(quizPerformance);
     } catch (e) {
-      return Left(e.toString());
+      log("Error When calculate score");
+      return 0;
     }
   }
 }

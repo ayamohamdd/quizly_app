@@ -5,6 +5,7 @@ import 'package:quizly_app/core/di/setup_service_locator.dart';
 import 'package:quizly_app/features/quiz/presentation/manager/cubit/quiz_cubit.dart';
 import 'package:quizly_app/features/quiz/presentation/views/pre_quiz_views/pre_quiz_view.dart';
 import 'package:quizly_app/features/quiz/presentation/views/quiz_views/quiz_view.dart';
+import 'package:quizly_app/features/quiz_performance/presentation/manager/cubit/quiz_performance_cubit.dart';
 import 'package:quizly_app/features/quiz_performance/presentation/views/quiz_performance_view.dart';
 import 'package:quizly_app/features/skill_performance/presentation/manager/cubit/skill_performance_cubit.dart';
 import 'package:quizly_app/features/skill_performance/presentation/views/skill_performance_view.dart';
@@ -20,7 +21,7 @@ class AppRouter {
 
   static const String preQuizView = '/preQuizView';
   static const String quizView = '/quizView';
-  static const String quizPerformance = '/quizPerformance';
+  static const String quizPerformanceView = '/quizPerformance';
 
   static const String skillsView = '/skillsView';
   static const String skillPerformanceView = '/skillPerformanceView';
@@ -68,20 +69,27 @@ class AppRouter {
         },
       ),
       GoRoute(
-        path: quizView,
+        path: AppRouter.quizView,
         builder: (context, state) {
-          final int? quizId = state.extra as int?;
+          final extra = state.extra as Map<String, dynamic>;
+          final int quizId = extra['quizId'];
+          final QuizCubit cubit = extra['cubit'];
+
           return BlocProvider.value(
-            value: SetupSeviceLocator.sl<QuizCubit>(),
-            child: QuizView(quizId: quizId!),
+            value: cubit,
+            child: QuizView(quizId: quizId),
           );
         },
       ),
+
       GoRoute(
-        path: quizPerformance,
+        path: quizPerformanceView,
         builder: (context, state) {
+          final int? quizId = state.extra as int?;
           return BlocProvider.value(
-            value: SetupSeviceLocator.sl<QuizCubit>(),
+            value:
+                SetupSeviceLocator.sl<QuizPerformanceCubit>()
+                  ..getQuizPerformance(quizId ?? 32),
             child: QuizPerformanceView(),
           );
         },

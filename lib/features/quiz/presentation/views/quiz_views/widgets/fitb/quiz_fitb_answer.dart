@@ -42,7 +42,7 @@ class _QuizFitbAnswerState extends State<QuizFitbAnswer> {
                 (value) => value!.isEmpty ? "Value cannot be empty" : null,
             onChanged: (value) {
               if (_formKey.currentState!.validate()) {
-                SetupSeviceLocator.sl<QuizCubit>().setFITBAnswer(
+               context.read<QuizCubit>().setFITBAnswer(
                   widget.questionId!,
                   value,
                 );

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:quizly_app/core/app_router/app_routers.dart';
 import 'package:quizly_app/core/constants/media_query_extension.dart';
 import 'package:quizly_app/core/di/setup_service_locator.dart';
 import 'package:quizly_app/core/utils/theme/app_colors.dart';
@@ -78,7 +80,7 @@ class QuizMcqAnswerBuilder extends StatelessWidget {
 
         return CustomButton(
           backgroundColor: AppColors.primary,
-                      borderColor: AppColors.primary,
+          borderColor: AppColors.primary,
 
           textColor: AppColors.onTertiary,
           text: 'Submit',
@@ -96,13 +98,13 @@ class QuizMcqAnswerBuilder extends StatelessWidget {
     String? selected,
     bool isCorrect,
   ) {
-    final cubit = SetupSeviceLocator.sl<QuizCubit>();
+    final cubit = context.read<QuizCubit>();
     final questionId = questionEntity.id!;
     final level = questionEntity.level;
 
     if (isCorrect) {
       cubit.insertQuizQuestion(quizId, questionId, level, selected, 1);
-      _goToNextPage();
+      _goToNextPage(context);
     } else {
       cubit.disableQuestion(questionId);
       _showExplanation(context, selected);
@@ -110,7 +112,7 @@ class QuizMcqAnswerBuilder extends StatelessWidget {
   }
 
   void _showExplanation(BuildContext context, String? selected) {
-    final cubit = SetupSeviceLocator.sl<QuizCubit>();
+    final cubit = context.read<QuizCubit>();
     final questionId = questionEntity.id!;
     final level = questionEntity.level;
 
@@ -124,16 +126,22 @@ class QuizMcqAnswerBuilder extends StatelessWidget {
             onNext: () {
               Navigator.of(context).pop();
               cubit.insertQuizQuestion(quizId, questionId, level, selected, 0);
-              _goToNextPage();
+              _goToNextPage(context);
             },
           ),
     );
   }
 
-  void _goToNextPage() {
-    pageController.nextPage(
-      duration: const Duration(milliseconds: 400),
-      curve: Curves.easeInOut,
-    );
+  void _goToNextPage(BuildContext context) {
+    if (questionIndex == questionsLength - 1) {
+      GoRouter.of(
+        context,
+      ).pushReplacement(AppRouter.quizPerformanceView, extra: quizId);
+    } else {
+      pageController.nextPage(
+        duration: const Duration(milliseconds: 400),
+        curve: Curves.easeInOut,
+      );
+    }
   }
 }

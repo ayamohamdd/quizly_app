@@ -59,7 +59,7 @@ class _PreQuizViewState extends State<PreQuizView> {
                   text: "Start Quiz",
                   textColor: AppColors.surface,
                   onPressed: () {
-                    SetupSeviceLocator.sl<QuizCubit>().fetchQuizQuerstions(
+                    context.read<QuizCubit>().fetchQuizQuerstions(
                       1,
                       state.selectedNumber!,
                       state.selectedLevels,
@@ -69,9 +69,13 @@ class _PreQuizViewState extends State<PreQuizView> {
               },
               listener: (BuildContext context, QuizSettingsState state) {
                 if (state.isSuccess == true) {
-                  GoRouter.of(
-                    context,
-                  ).pushReplacement(AppRouter.quizView, extra: widget.quizId);
+                  GoRouter.of(context).pushReplacement(
+                    AppRouter.quizView,
+                    extra: {
+                      'quizId': widget.quizId,
+                      'cubit': context.read<QuizCubit>(),
+                    },
+                  );
                 }
               },
             ),

@@ -11,6 +11,7 @@ import 'package:quizly_app/features/quiz_performance/data/repos/quiz_performance
 import 'package:quizly_app/features/quiz_performance/domain/repos/quiz_performance_repo.dart';
 import 'package:quizly_app/features/quiz_performance/domain/use_cases/get_quiz_performance_use_case.dart';
 import 'package:quizly_app/features/quiz_performance/domain/use_cases/get_quiz_score_use_case.dart';
+import 'package:quizly_app/features/quiz_performance/presentation/manager/cubit/quiz_performance_cubit.dart';
 import 'package:quizly_app/features/skill_performance/data/data_sources/skill_performance_data_source.dart';
 import 'package:quizly_app/features/skill_performance/data/repos/skill_performance_repo_impl.dart';
 import 'package:quizly_app/features/skill_performance/domain/repos/skill_performance_repo.dart';
@@ -111,13 +112,11 @@ class SetupSeviceLocator {
   }
 
   static void registerCubits() {
-    sl.registerLazySingleton<UnitsCubit>(() => UnitsCubit());
-    sl.registerLazySingleton<SkillsCubit>(() => SkillsCubit());
-    sl.registerLazySingleton<SkillPerformanceCubit>(
-      () => SkillPerformanceCubit(),
-    );
-
-    sl.registerLazySingleton<QuizCubit>(() => QuizCubit());
+    sl.registerFactory<UnitsCubit>(() => UnitsCubit());
+    sl.registerFactory<SkillsCubit>(() => SkillsCubit());
+    sl.registerFactory<SkillPerformanceCubit>(() => SkillPerformanceCubit());
+    sl.registerFactory<QuizCubit>(() => QuizCubit());
+    sl.registerFactory<QuizPerformanceCubit>(() => QuizPerformanceCubit());
   }
 
   static void registerCore() {
