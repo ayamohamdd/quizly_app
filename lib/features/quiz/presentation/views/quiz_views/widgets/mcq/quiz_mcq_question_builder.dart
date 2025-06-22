@@ -80,14 +80,20 @@ class QuizMcqAnswerBuilder extends StatelessWidget {
 
         return CustomButton(
           backgroundColor: AppColors.primary,
-          borderColor: AppColors.primary,
+          borderColor:
+              selected != null
+                  ? AppColors.primary
+                  : AppColors.onSurfaceDisabled,
 
           textColor: AppColors.onTertiary,
           text: 'Submit',
+
           onPressed:
-              isDisabled
-                  ? null
-                  : () => _handleSubmission(context, selected, isCorrect),
+              selected != null
+                  ? isDisabled
+                      ? null
+                      : () => _handleSubmission(context, selected, isCorrect)
+                  : null,
         );
       },
     );

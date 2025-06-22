@@ -71,21 +71,24 @@ class QuizFitbAnswerBuilder extends StatelessWidget {
 
         return CustomButton(
           backgroundColor: AppColors.primary,
-          borderColor: AppColors.primary,
+          borderColor:
+              answer != null ? AppColors.primary : AppColors.onSurfaceDisabled,
 
           textColor: AppColors.onTertiary,
           text: 'Submit',
           onPressed:
-              isDisabled
-                  ? null
-                  : () => _handleSubmit(context, answer, correct!),
+              answer != null
+                  ? isDisabled
+                      ? null
+                      : () => _handleSubmit(context, answer, correct!)
+                  : null,
         );
       },
     );
   }
 
   void _handleSubmit(BuildContext context, String? answer, String correct) {
-    final cubit =context.read<QuizCubit>();
+    final cubit = context.read<QuizCubit>();
     final questionId = questionEntity.id!;
     final level = questionEntity.level;
 
