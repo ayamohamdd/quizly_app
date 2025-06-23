@@ -93,7 +93,7 @@ To get a local copy up and running, follow these simple steps.
 ### Download apk
 
 1.  **Download the APK:**
-    - [Download the latest APK here]((app-release.apk))
+    - [Download the latest APK here](app-release.apk)
 
 2.  **Install the APK on your device:**
     - Locate the downloaded APK file on your device.
