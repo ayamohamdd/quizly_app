@@ -27,9 +27,10 @@ class SkillCardContent extends StatelessWidget {
         ),
         IconButton(
           onPressed: () {
-            GoRouter.of(
-              context,
-            ).push(AppRouter.skillPerformanceView, extra: skillId);
+            GoRouter.of(context).push(
+              AppRouter.skillPerformanceView,
+              extra: {"skill_id": skillId, "skill_name": name},
+            );
           },
           icon: Icon(Icons.arrow_forward),
         ),

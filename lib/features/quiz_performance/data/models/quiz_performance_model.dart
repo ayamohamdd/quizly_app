@@ -13,7 +13,7 @@ class QuizPerformanceModel {
   });
   factory QuizPerformanceModel.fromDatabase(Map<String, dynamic> db) {
     return QuizPerformanceModel(
-      questionLevel: db["question_level"],
+      questionLevel: db["level"],
       total: db["total"],
       correct: db["correct"],
       percentage: db["percentage"],

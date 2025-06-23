@@ -1,6 +1,8 @@
 // quiz_performance_view.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:quizly_app/core/app_router/app_routers.dart';
 import 'package:quizly_app/core/constants/media_query_extension.dart';
 import 'package:quizly_app/core/utils/theme/app_colors.dart';
 import 'package:quizly_app/core/utils/theme/text_styles.dart';
@@ -72,15 +74,26 @@ class QuizPerformanceView extends StatelessWidget {
                   ],
 
                   SizedBox(height: context.screenHeight * 0.1),
-                  CustomButton(
-                    backgroundColor: AppColors.primary,
-                    textColor: AppColors.surface,
-                    text: "Create New Quiz",
-                    onPressed: () {},
-                  ),
                 ],
               ),
             );
+          },
+        ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: EdgeInsets.only(
+          left: context.screenWidth * 0.03,
+          right: context.screenWidth * 0.03,
+
+          bottom: context.screenHeight * 0.05,
+        ),
+        child: CustomButton(
+          backgroundColor: AppColors.primary,
+          borderColor: AppColors.primary,
+          textColor: AppColors.surface,
+          text: "Create Quiz",
+          onPressed: () {
+            GoRouter.of(context).pop();
           },
         ),
       ),

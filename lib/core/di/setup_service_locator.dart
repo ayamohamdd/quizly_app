@@ -17,6 +17,8 @@ import 'package:quizly_app/features/skill_performance/data/data_sources/skill_pe
 import 'package:quizly_app/features/skill_performance/data/repos/skill_performance_repo_impl.dart';
 import 'package:quizly_app/features/skill_performance/domain/repos/skill_performance_repo.dart';
 import 'package:quizly_app/features/skill_performance/domain/use_cases/create_quiz_use_case.dart';
+import 'package:quizly_app/features/skill_performance/domain/use_cases/fetch_skill_wrong_questions_use_case.dart';
+import 'package:quizly_app/features/skill_performance/domain/use_cases/get_skill_performance_use_case.dart';
 import 'package:quizly_app/features/skill_performance/presentation/manager/cubit/skill_performance_cubit.dart';
 import 'package:quizly_app/features/skills/data/data_sources/skills_data_source.dart';
 import 'package:quizly_app/features/skills/data/repos/skills_repo_impl.dart';
@@ -92,6 +94,18 @@ class SetupSeviceLocator {
 
     sl.registerLazySingleton<CreateQuizUseCase>(
       () => CreateQuizUseCase(skillPerformanceRepo: sl<SkillPerformanceRepo>()),
+    );
+
+    sl.registerLazySingleton<FetchSkillWrongQuestionsUseCase>(
+      () => FetchSkillWrongQuestionsUseCase(
+        skillPerformanceRepo: sl<SkillPerformanceRepo>(),
+      ),
+    );
+
+    sl.registerLazySingleton<GetSkillPerformanceUseCase>(
+      () => GetSkillPerformanceUseCase(
+        skillPerformanceRepo: sl<SkillPerformanceRepo>(),
+      ),
     );
 
     sl.registerLazySingleton<FetchQuestionsUseCase>(

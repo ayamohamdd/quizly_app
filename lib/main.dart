@@ -21,19 +21,8 @@ void main() async {
   await SetupSeviceLocator.init();
   Bloc.observer = const SimpleBlocObserver();
   SqfliteProvider sqfliteProvider = SqfliteProvider();
-  // log("${await sqfliteProvider.getWrongQuestions(71)}");
-  QuizPerformanceDataSource quizPerformanceDataSource =
-      QuizPerformanceDataSourceImpl(sqfliteProvider: sqfliteProvider);
-  quizPerformanceDataSource.fetchWrongQuestions(72);
-  QuizPerformanceRepo quizPerformanceRepo = QuizPerformanceRepoImpl(
-    quizPerformanceDataSource: quizPerformanceDataSource,
-  );
-  quizPerformanceRepo.fetchQuizWrongQuestions(72);
-  FetchQuizWrongQuestionsUseCase fetchQuizWrongQuestionsUseCase =
-      FetchQuizWrongQuestionsUseCase(quizPerformanceRepo: quizPerformanceRepo);
-  await fetchQuizWrongQuestionsUseCase.call(72);
+  log("${await sqfliteProvider.getSkillsPerformance(1)}");
 
-  SetupSeviceLocator.sl<QuizPerformanceCubit>().getQuizWrongQuestions(72);
   // List<QuizPerformanceModel> q = await quizPerformanceDataSource
   //     .getQuizPerformancePerLevel(33);
   // if (q.isNotEmpty) {

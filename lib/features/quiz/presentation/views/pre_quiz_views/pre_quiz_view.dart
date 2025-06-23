@@ -13,8 +13,10 @@ import 'package:quizly_app/features/quiz/presentation/views/pre_quiz_views/widge
 import 'package:quizly_app/features/quiz/presentation/views/pre_quiz_views/widgets/quiz_number_of_questions.dart';
 
 class PreQuizView extends StatefulWidget {
-  const PreQuizView({super.key, required this.quizId});
+  const PreQuizView({super.key, required this.quizId, required this.skillId});
   final int quizId;
+  final int skillId;
+  
   @override
   State<PreQuizView> createState() => _PreQuizViewState();
 }
@@ -60,7 +62,7 @@ class _PreQuizViewState extends State<PreQuizView> {
                   textColor: AppColors.surface,
                   onPressed: () {
                     context.read<QuizCubit>().fetchQuizQuerstions(
-                      1,
+                      widget.skillId,
                       state.selectedNumber!,
                       state.selectedLevels,
                     );

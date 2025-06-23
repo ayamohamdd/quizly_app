@@ -98,7 +98,7 @@ class SqfliteProvider {
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     quiz_id INTEGER NOT NULL,
     question_id INTEGER NOT NULL,
-    question_level TEXT CHECK (question_level IN ('easy', 'medium', 'hard')) NOT NULL,
+    level TEXT CHECK (level IN ('easy', 'medium', 'hard')) NOT NULL,
     user_answer TEXT,
     is_correct INTEGER CHECK (is_correct IN (0, 1)),
     answered_at DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -124,7 +124,7 @@ class SqfliteProvider {
     final int id = await SqfliteProvider.db!.insert('quiz_questions', {
       'quiz_id': quizId,
       'question_id': questionId,
-      'question_level': questionLevel,
+      'level': questionLevel,
       'user_answer': userAnswer,
       'is_correct': isCorrect == 1 ? 1 : 0,
     });
@@ -152,17 +152,33 @@ class SqfliteProvider {
   Future<List<Map<String, dynamic>>> getSkillsPerformance(int skillId) async {
     return await db!.rawQuery(
       '''
-    SELECT level, 
-    COUNT(*) AS total,
-    SUM(is_correct) AS correct,
-    ROUND(SUM(is_correct) * 100.0 / COUNT(*), 2) AS percentage
-    FROM questions q
-    JOIN quiz_questions qq ON q.id = qq.question_id
-    WHERE q.skill_id = ? 
-    GROUP BY level;
+    SELECT qq.level, 
+COUNT(*) AS total,
+SUM(qq.is_correct) AS correct,
+ROUND(SUM(qq.is_correct) * 100.0 / COUNT(*), 2) AS percentage
+FROM questions q
+JOIN quiz_questions qq ON q.id = qq.question_id
+WHERE q.skill_id = ? 
+GROUP BY qq.level;
+
     ''',
       [skillId],
     );
+  }
+
+  Future<List<Map<String, dynamic>>> getSkillWrongQuestions(int skillId) async {
+    final result = await db!.rawQuery(
+      '''
+      SELECT q.id, q.question_text, qq.user_answer, q.correct_answer
+      FROM questions q
+      JOIN quiz_questions qq ON q.id = qq.question_id
+      WHERE qq.is_correct = 0 AND q.skill_id = ?;
+    ''',
+      [skillId],
+    );
+
+    log("$result");
+    return result;
   }
 
   Future<List<Map<String, dynamic>>> getQuizPerformancePerLevel(
@@ -170,13 +186,13 @@ class SqfliteProvider {
   ) async {
     final result = await db!.rawQuery(
       '''
-      SELECT qq.question_level, 
+      SELECT qq.level, 
       COUNT(*) AS total,
       SUM(qq.is_correct) AS correct,
       ROUND(SUM(qq.is_correct) * 100.0 / COUNT(*), 2) AS percentage
       FROM quiz_questions qq
       WHERE qq.quiz_id = ?
-      GROUP BY qq.question_level;
+      GROUP BY qq.level;
       ''',
       [quizId],
     );
@@ -184,13 +200,18 @@ class SqfliteProvider {
     return result;
   }
 
-  Future<List<Map<String, dynamic>>> getWrongQuestions(int quizId) async {
-    final result = await db!.rawQuery('''
+  Future<List<Map<String, dynamic>>> getWrongQuestionsPerLevel(
+    int quizId,
+  ) async {
+    final result = await db!.rawQuery(
+      '''
       SELECT q.id, q.question_text, qq.user_answer, q.correct_answer
       FROM questions q
       JOIN quiz_questions qq ON q.id = qq.question_id
       WHERE qq.is_correct = 0 AND qq.quiz_id = ?;
-    ''',[quizId]);
+    ''',
+      [quizId],
+    );
 
     log("$result");
     return result;

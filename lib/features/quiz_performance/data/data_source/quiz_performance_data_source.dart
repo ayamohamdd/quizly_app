@@ -14,7 +14,6 @@ class QuizPerformanceDataSourceImpl extends QuizPerformanceDataSource {
   final SqfliteProvider sqfliteProvider;
 
   QuizPerformanceDataSourceImpl({required this.sqfliteProvider});
-
   @override
   Future<List<QuizPerformanceModel>> getQuizPerformancePerLevel(
     int? quizId,
@@ -51,7 +50,7 @@ class QuizPerformanceDataSourceImpl extends QuizPerformanceDataSource {
 
   @override
   Future<List<QuizWrongQuestionModel>> fetchWrongQuestions(int? quizId) async {
-    final quizWrongQuestionsData = await sqfliteProvider.getWrongQuestions(
+    final quizWrongQuestionsData = await sqfliteProvider.getWrongQuestionsPerLevel(
       quizId!,
     );
     List<QuizWrongQuestionModel> quizWrongQuestionsList =

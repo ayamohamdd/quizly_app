@@ -51,20 +51,28 @@ class AppRouter {
       GoRoute(
         path: skillPerformanceView,
         builder: (context, state) {
-          int? skillId = state.extra as int?;
+          final Map<String, dynamic> extra = state.extra as Map<String, dynamic>;
+          int? skillId = extra["skill_id"];
+          String? skillName = extra["skill_name"];
           return BlocProvider.value(
-            value: SetupSeviceLocator.sl<SkillPerformanceCubit>(),
-            child: SkillPerformanceView(skillId: skillId),
+            value:
+                SetupSeviceLocator.sl<SkillPerformanceCubit>()
+                  ..getSkillWrongQuestions(skillId ?? 0)
+                  ..getSkillPerformance(skillId ?? 0),
+            child: SkillPerformanceView(skillId: skillId, skillName: skillName!),
           );
         },
       ),
       GoRoute(
         path: preQuizView,
         builder: (context, state) {
-          final int? quizId = state.extra as int?;
+          final Map<String, int?> extra = state.extra as Map<String, int?>;
+          final int quizId = extra["quiz_id"]!;
+          final int skillId = extra["skill_id"]!;
+
           return BlocProvider.value(
             value: SetupSeviceLocator.sl<QuizCubit>(),
-            child: PreQuizView(quizId: quizId!),
+            child: PreQuizView(quizId: quizId, skillId: skillId),
           );
         },
       ),
