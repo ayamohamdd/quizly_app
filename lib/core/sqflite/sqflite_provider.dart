@@ -28,7 +28,6 @@ class SqfliteProvider {
       await file.writeAsBytes(bytes, flush: true);
     }
 
-    // return openDatabase(path, onCreate: _onCreate, version: 1);
     return openDatabase(
       path,
       version: 1,
@@ -48,7 +47,6 @@ class SqfliteProvider {
     return await db!.query('units');
   }
 
-  // Future<>
   Future<List<Map<String, dynamic>>> getSkills(int unitId) async {
     return await db!.query('skills', where: 'unit_id= ?', whereArgs: [unitId]);
   }
