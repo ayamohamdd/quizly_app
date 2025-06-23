@@ -4,11 +4,10 @@ Quizly is a feature-rich math quiz application built with Flutter. It's designed
 
 ## 📸 Screenshots
 
-*(Here you can add screenshots of your application)*
 
-| Onboarding | Home Screen | Quiz Screen |
-| :--------: | :---------: | :---------: |
-| *(image)*  |  *(image)*  |  *(image)*  |
+| Skill Performance | Quiz Screen | Quiz Performance Screen |
+| :--------:        | :---------: | :---------------------: |
+| *(image)*         |  *(image)*  |  *(image)*              |
 
 ## ✨ Features
 
