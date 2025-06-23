@@ -93,7 +93,7 @@ To get a local copy up and running, follow these simple steps.
     flutter run
     ```
 
-### Download apk
+### Or Download apk
 
 1.  **Download the APK:**
     - [Download the latest APK here](app-release.apk)
