@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:quizly_app/core/sqflite/sqflite_provider.dart';
 import 'package:quizly_app/features/quiz_performance/data/models/quiz_performance_model.dart';
 import 'package:quizly_app/features/quiz_performance/data/models/quiz_wrong_question_model.dart';
@@ -34,12 +32,6 @@ class QuizPerformanceDataSourceImpl extends QuizPerformanceDataSource {
     int totalQuestions = 0;
 
     for (var levelScore in quizPerformance!) {
-      // for (var levelScore in quizPerformance!) {
-      log(
-        'Level: ${levelScore.questionLevel}, total: ${levelScore.total}, correct: ${levelScore.correct}',
-      );
-      // }
-
       totalQuestions += levelScore.total ?? 0;
       totalScore += levelScore.correct ?? 0;
     }
@@ -57,7 +49,6 @@ class QuizPerformanceDataSourceImpl extends QuizPerformanceDataSource {
         quizWrongQuestionsData
             .map((map) => QuizWrongQuestionModel.fromDatabase(map))
             .toList();
-    log("datasource $quizWrongQuestionsList");
     return quizWrongQuestionsList;
   }
 }

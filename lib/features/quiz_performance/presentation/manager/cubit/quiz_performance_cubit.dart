@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
 import 'package:quizly_app/core/di/setup_service_locator.dart';
 import 'package:quizly_app/features/quiz_performance/data/models/quiz_performance_model.dart';
@@ -54,7 +52,6 @@ class QuizPerformanceCubit extends Cubit<GetQuizPerformanceState> {
   Future<void> getQuizWrongQuestions(int quizId) async {
     emit(state.copyWith());
     final result = await _fetchQuizWrongQuestionsUseCase.call(quizId);
-    log("cubit $result");
     result.fold(
       (l) {
         emit(
@@ -66,7 +63,6 @@ class QuizPerformanceCubit extends Cubit<GetQuizPerformanceState> {
         );
       },
       (r) {
-        log("hena $r");
         emit(state.copyWith(quizWrongQuestionsList: r));
       },
     );

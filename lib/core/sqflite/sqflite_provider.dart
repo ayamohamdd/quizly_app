@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:flutter/services.dart' show ByteData, rootBundle;
@@ -68,7 +66,6 @@ class SqfliteProvider {
     ORDER BY RANDOM()
     LIMIT ?
   ''', whereArgs);
-    log("response $response");
     return response;
   }
 
@@ -120,7 +117,6 @@ class SqfliteProvider {
     String userAnswer,
     int isCorrect,
   ) async {
-    log("quizId $quizId");
     final int id = await SqfliteProvider.db!.insert('quiz_questions', {
       'quiz_id': quizId,
       'question_id': questionId,
@@ -129,7 +125,6 @@ class SqfliteProvider {
       'is_correct': isCorrect == 1 ? 1 : 0,
     });
 
-    log("$id  ");
     return id;
   }
 
@@ -177,7 +172,6 @@ GROUP BY qq.level;
       [skillId],
     );
 
-    log("$result");
     return result;
   }
 
@@ -196,7 +190,6 @@ GROUP BY qq.level;
       ''',
       [quizId],
     );
-    log("result $result, $quizId");
     return result;
   }
 
@@ -213,7 +206,6 @@ GROUP BY qq.level;
       [quizId],
     );
 
-    log("$result");
     return result;
   }
 }

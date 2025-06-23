@@ -1,7 +1,4 @@
-import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
 import 'package:quizly_app/core/di/setup_service_locator.dart';
 import 'package:quizly_app/features/skill_performance/domain/use_cases/create_quiz_use_case.dart';
 import 'package:quizly_app/features/skill_performance/domain/use_cases/fetch_skill_wrong_questions_use_case.dart';
@@ -32,7 +29,6 @@ class SkillPerformanceCubit extends Cubit<SkillPerformanceStates> {
         );
       },
       (r) {
-        log("eh $r");
         emit(
           state.copyWith(createLoading: false, createSuccess: true, quizId: r),
         );
@@ -54,7 +50,6 @@ class SkillPerformanceCubit extends Cubit<SkillPerformanceStates> {
         );
       },
       (r) {
-        log("wrong $r");
         emit(
           state.copyWith(
             isLoading: false,
@@ -80,7 +75,6 @@ class SkillPerformanceCubit extends Cubit<SkillPerformanceStates> {
         );
       },
       (r) {
-        log("per $r");
         emit(
           state.copyWith(
             isLoading: false,

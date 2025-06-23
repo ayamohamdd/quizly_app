@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
 import 'package:quizly_app/core/di/setup_service_locator.dart';
 import 'package:quizly_app/features/quiz/domain/entities/fetch_questions_param_entity.dart';
@@ -53,7 +51,6 @@ class QuizCubit extends Cubit<QuizSettingsState> {
   void selectMcqOption(int questionIndex, String selectedOptionIndex) {
     final updatedSelections = Map<int, String>.from(state.selectedMcqOptions);
     updatedSelections[questionIndex] = selectedOptionIndex;
-    log("$updatedSelections");
 
     emit(state.copyWith(selectedMcqOptions: updatedSelections));
   }
@@ -82,7 +79,6 @@ class QuizCubit extends Cubit<QuizSettingsState> {
           userAnswer: userAnswer,
           isCorrect: isCorrect,
         );
-    log("ehhhhhhh ${insertQuizQuestionParamEntity.questionLevel}");
     final result = await _insertQuizQuestionUseCase.call(
       insertQuizQuestionParamEntity,
     );

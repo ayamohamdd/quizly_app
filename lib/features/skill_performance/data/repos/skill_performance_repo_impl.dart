@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dartz/dartz.dart';
 
 import 'package:quizly_app/core/utils/errors/failure.dart';
@@ -42,7 +40,6 @@ class SkillPerformanceRepoImpl extends SkillPerformanceRepo {
       final response = await skillPerformanceDataSource.fetchWrongQuestions(
         skillId,
       );
-      log("repo $response");
       return Right(response);
     } catch (e) {
       return Left(DatabaseFailure.queryError());

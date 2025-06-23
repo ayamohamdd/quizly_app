@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:quizly_app/core/constants/media_query_extension.dart';
 import 'package:quizly_app/core/utils/theme/app_colors.dart';
@@ -11,6 +10,7 @@ class McqOptionTile extends StatelessWidget {
   final VoidCallback onTap;
 
   const McqOptionTile({
+    super.key,
     required this.optionText,
     required this.isSelected,
     required this.isDisabled,

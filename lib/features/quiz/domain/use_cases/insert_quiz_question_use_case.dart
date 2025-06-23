@@ -1,9 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:quizly_app/core/utils/errors/failure.dart';
 import 'package:quizly_app/core/utils/use_cases/use_case.dart';
-import 'package:quizly_app/features/quiz/domain/entities/fetch_questions_param_entity.dart';
 import 'package:quizly_app/features/quiz/domain/entities/insert_quiz_question_param_entity.dart';
-import 'package:quizly_app/features/quiz/domain/entities/quiz_question_entity.dart';
 import 'package:quizly_app/features/quiz/domain/repos/quiz_repo.dart';
 
 class InsertQuizQuestionUseCase
