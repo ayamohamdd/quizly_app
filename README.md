@@ -5,19 +5,19 @@ Quizly is a feature-rich math quiz application built with Flutter. It's designed
 ## 📸 Screenshots
 
 ### Skill Performance
-![Screenshot](screenshots/skill_performance.jpg)
+<img src="screenshots/skill_performance.jpg" alt="Screenshot" width="300" height="600">
 
 ### Pre Quiz Screen
-![Screenshot](screenshots/pre_quiz.jpg)
+<img src="screenshots/pre_quiz.jpg" alt="Screenshot" width="300" height="600">
 
 ### Quiz Screen
-![Screenshot](screenshots/quiz1.jpg)
-![Screenshot](screenshots/quiz2.jpg)
-![Screenshot](screenshots/quiz3.jpg)
-![Screenshot](screenshots/quiz4.jpg)
+<img src="screenshots/quiz1.jpg" alt="Screenshot" width="300" height="600">
+<img src="screenshots/quiz2.jpg" alt="Screenshot" width="300" height="600">
+<img src="screenshots/quiz3.jpg" alt="Screenshot" width="300" height="600">
+<img src="screenshots/quiz4.jpg" alt="Screenshot" width="300" height="600">
 
 ### Quiz Performance Screen 
-![Screenshot](screenshots/quiz_performance.jpg)
+<img src="screenshots/quiz_performance.jpg" alt="Screenshot" width="300" height="600">
 
 ## ✨ Features
 
